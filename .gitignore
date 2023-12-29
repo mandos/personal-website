@@ -1,5 +1,17 @@
+# misc
+.direnv
+.org-publish-cache
+result
+
 # infra
 .terraform
 .terragrunt-cache
 auto-*.tf
 infra/.envrc
+
+# jekyll
+_site
+.sass-cache
+.jekyll-metadata
+.bundle
+vendor

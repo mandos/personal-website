@@ -1,0 +1,7 @@
+#+title: Marek Maksimczyk
+#+options: toc:nil
+#+begin_export html
+---
+layout: home
+---
+#+end_export
