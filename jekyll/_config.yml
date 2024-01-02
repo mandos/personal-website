@@ -9,13 +9,16 @@
 # in the templates via {{ site.myvariable }}.
 
 title: Mad Hatter in Discworld
-email: marek.maksimczyk in domain mandos.net.pl
+email:
+  contact: bWFyZWsubWFrc2ltY3p5ayt3ZWJAbWFuZG9zLm5ldC5wbA==
+  subject: Q29udGFjdCBmb3JtIGZyb20gbWFuZG9zLm5ldC5wbA==
 description: >-
   My personal page about technical stuff and other things which are interested (for me).
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://mandos.net.pl" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: jekyllrb
 github_username:  mandos
+linkedin_username: marek-maksimczyk-532a4358
 
 # Build settings
 theme: minima

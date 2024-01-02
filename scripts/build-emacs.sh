@@ -4,6 +4,8 @@ echo "Publishing site with Emacs..."
 echo "Usage: ./scripts/publish.sh [elisp-script]"
 echo "  elisp-script: the elisp script to run"
 
+rm -rf jekyll/_posts
+
 if [[ -n $1 ]]; then
   ELISP_SCRIPT=$1
 else
