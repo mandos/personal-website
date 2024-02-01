@@ -9,9 +9,3 @@ result
 auto-*.tf
 infra/.envrc
 
-# jekyll
-_site
-.sass-cache
-.jekyll-metadata
-.bundle
-vendor
