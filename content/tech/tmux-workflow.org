@@ -1,6 +1,8 @@
 #+series: website the hard way
 #+title: My Tmux Setup
-#+draft: true
+#+draft: false
 
-* Introduction nr 2
+* Introduction
 So I started to use tmux
+
+* Second paragraph
