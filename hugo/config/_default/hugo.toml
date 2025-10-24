@@ -10,4 +10,3 @@ copyright = "Marek Maksimczyk" # Footer copyright holder, otherwise will use sit
   [module.imports]
     # path = 'github.com/vimux/mainroad'
     path = 'github.com/chipzoller/hugo-clarity'
-
