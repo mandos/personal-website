@@ -1,0 +1,15 @@
+[en]
+disabled = false
+# contentDir = "content/en"
+languageDirection = ''
+languageName = 'English'
+title = 'Madhatter in the Discworld'
+weight = 10
+
+[pl]
+disabled = false
+# contentDir = "content/pl"
+languageDirection = ''
+languageName = 'Polski'
+title = 'Szlony Kapelusznik w Świecie Dysku'
+weight = 20

@@ -1,0 +1,3 @@
+<table>
+  {{ range $key, $value := .Params }} {{ printf " <tr> <td>%#v</td> <td>%#v</td> </tr> " $key $value | safeHTML }} {{ end }}
+</table>

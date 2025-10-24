@@ -1,0 +1,74 @@
+#+title: Curriculum vitae 
+#+toc: 1
+#+date: [2025-10-09 czw]
+
+* Profil
+Doświadczony inżynier DevOps z solidnym zapleczem programistycznym.
+Z pasją do poznawania nowych technologii, projektowania innowacyjnych systemów oraz optymalizacji istniejącej infrastruktury.
+Biegły w pracy z platformami chmurowymi, automatyzacją i procesami CI/CD, z dogłębną znajomością procesów tworzenia oprogramowania.
+Zawsze chętny do podejmowania wyzwań i polepszania systemów poprzez dobrze zaprojektowane rozwiązania.
+* Języki
++ Polski - Język ojczysty
++ Angielski - B2/C1 (Zaawansowany)
++ Japoński - A1 (Początkujący)
+* Edukacja
+Politechnika Łódzka
+2001 – 2006
+Wydział Fizyki Technicznej, Informatyki i Matematyki Stosowanej
+* Umiejętności techniczne 
++ Chmura i Infrastructura: AWS (ECS, EKS, EC2, S3, CloudFront), GCP
++ IaC i Automatyzacja: Terraform, Terragrunt, CloudFormation, Puppet
++ CI/CD i Narzędzia DevOps: GitLab, CircleCI, Jenkins
++ Konteneryzacja i Orkiestracja: Docker, Kubernetes, Helm
++ Systemy Monitoringu i Logowania: Datadog, AWS CloudWatch, Prometheus, Grafana, ELK Stack
++ Skryptowanie i Programowanie: Python, Bash, PHP 
++ Systemy Kontroli Wersji i Kolaboracyjne: Git, GitHub, GitLab, Jira
+* Umiejęści miękkie 
++ Umiejętność rozwiązywania problemów
++ Zdolność adaptacji
++ Aktywne słuchanie
++ Nastawienie na ciągłe uczenie się i poszerzanie wiedzy
++ Samodzielność i skuteczne rozwiązywanie problemów (podejście „RTFM”)
+* Doświadczenie
+** 2024, Listopad  - Obecnie | Devops i Developer Freelancer 
+** 2024, Kwiecień – 2024, Październik | Senior DevOps Engineer w Foundever 
++ Zarządzanie infrastrukturą AWS przy użyciu Terraform.
++ Wspieranie zespołów deweloperskich w optymalizacji procesów i infrastruktury.
++ Projektowanie i ulepszanie procesy dostarczania oprogramowania, obejmujące zarządzanie infrastrukturą AWS, GitLab oraz konfiguracje ArgoCD/Helm.
++ Opracowanie procesu dostarczania warstwy bazodanowej (PostgreSQL) do aplikacji opartej na architechturze mikroserwisowej.
++ Przeprowadzenie migracji projektów GitLab, obejmującą kod źródłowy i procesów CI/CD.
+** 2021, Czerwiec – 2024, Marzec | Senior DevOps Engineer w Cobiro
++ Kierowanie małym zespołem DevOps, nadzór nad infrastrukturą chmurową i procesami wdrożeń.
++ Migracja infrastruktury AWS do modelu Infrastructure as Code (IaC) z wykorzystaniem Terraform, Terragrunt i Atlantis.
++ Zarządzanie infrastrukturą chmurową, głównie w środowisku AWS, z elementami w GCP.
++ Administracja klastrami Kubernetes (EKS), rozwój procesów wdrożeniowych oraz utrzymanie konfiguracji Kubernetes przy użyciu Helm i Helm Charts.
++ Wspieranie zespołów frontend i backend poprzez tworzenie procesów CI/CD (CircleCI) oraz budowę obrazów Docker.
++ Monitorowanie systemów za pomocą Datadog i AWS CloudWatch, zarządzanie centralną bazą logów w Elastic Cloud.
+** 2019, Styczeń  – 2021, Czerwiec | Senior DevOps Engineer w SeaChange Polska 
++ Projektowanie i wdrożenie infrastruktury opartej na AWS z wykorzystaniem Terraform dla produktów firmy, obejmującej ECS, EKS, EC2, S3, CloudFront, KMS, IAM, ElastiCache (Redis) oraz Elasticsearch. Konfiguracja EKS przy użyciu Terraform i Helm.
++ Tworzenie i konfiguracja systemów monitoringu (Prometheus, Grafana) oraz logowania (ELK, S3).
++ Opracowanie systemu dynamicznego tworzenia środowisk dla produktów firmy z wykorzystaniem Terraform i Jenkins.
++ Zarządzanie kontami AWS oraz konfiguracja infrastruktury sieciowej, w tym IAM i VPC, przy użyciu Terraform.
++ Wsparcie zespołów deweloperskich w zakresie utrzymania i optymalizacji środowisk programistycznych.
++ Koordynacja pracy małego zespołu DevOps oraz nadzór nad infrastrukturą i procesami automatyzacji.
++ Udział w rozwiązywaniu problemów technicznych jako wsparcie drugiej linii (Second-Line Support).
+** 2015, Styczeń – 2018, Grudzień | System Administrator w Xstream AS 
++ Projektowanie i utrzymanie infrastruktury AWS z wykorzystaniem wewnętrznego systemu opartego na Python (Boto, Fabric), Puppet i Packer, a następnie migracja do CloudFormation.
++ Zarządzanie ponad 300 serwerami on-premise (zarówno fizycznymi, jak i wirtualnymi) przy użyciu Fabric i Puppet.
++ Wdrażanie procesów i narzędzi developerskich w zespole operacji IT.
++ Zarządzanie i konfiguracja usług wewnętrznych, w tym: monitoringu (Nagios, Zabbix, Observium), repozytoriów kodu (SVN, Git, Gerrit), systemu logowania (ELK) oraz potoków CI/CD (Jenkins).
++ Wsparcie infrastruktury i zespołów developerskich w zakresie pierwszej i drugiej linii pomocy technicznej.
+** 2012, Styczeń  – 2014, Grudzień | Senior PHP Developer w Xtream AS 
++ Rozwój i utrzymanie systemu zarządzania treściami wideo z wykorzystaniem PHP 5, Zend Framework i MySQL.
++ Projektowanie i utrzymanie systemu przetwarzania oraz importu materiałów wideo opartego na PHP 5, Symfony 2 i MySQL.
+** 2009 – 2011 | PHP Full-Stack Web Developer Freelancer 
++ Tworzenie stron internetowych z wykorzystaniem HTML, CSS i JavaScript.
++ Budowa systemu magazynowego opartego na PHP 5, Kohana Framework i MySQL.
++ Projektowanie i wdrożenie serwisu internetowego dla opiekunek do dzieci z użyciem PHP 5, Yii Framework i MySQL.
++ Stworzenie serwisu porównującego oferty bukmacherów opartego na PHP 5, Kohana Framework i MySQL.
+** 2007 – 2008 | PHP Developer w okazje.info 
++ Opracowanie autorskiego frameworka dla serwisu porównującego produkty, z wykorzystaniem PHP 5, MySQL, HTML i CSS.
++ Implementacja rozwiązań do przetwarzania i wyszukiwania danych z użyciem Lucene i Solr.
+** 2005 – 2006 | System Administrator w DELTRA Kozłowski i Graczykowski Sp.j.
++ Świadczenie ogólnego wsparcia IT, w tym zarządzanie siecią, administracja serwerami Windows oraz utrzymanie stacji roboczych.
++ Projektowanie i utrzymanie strony internetowej firmy.

@@ -1,8 +1,0 @@
-#+series: website the hard way
-#+title: Website: The Hard Way
-#+categories[]: "website-the-hard-way"
-#+draft: false
-
-* Introduction
-This e story no chance that's it works
-ok done

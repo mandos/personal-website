@@ -1,0 +1,33 @@
+[[main]]
+name = 'Blog'
+pageRef = '/blog'
+weight = 10
+
+[[main]]
+name = 'About'
+pageRef = '/about'
+weight = 20
+
+[[main]]
+name = 'Curriculum vitae'
+pageRef = '/curriculum-vitae'
+weight = 30
+
+[[social]]
+  name = "mail"
+  type = "social"
+  weight = 10
+  url = "mailto:marek.maksimczyk+page@mandos.net.pl"
+[[social]]
+  name = "github"
+  type = "social"
+  weight = 20
+  url = "https://github.com/mandos"
+[[social]]
+  name = "linkedin"
+  weight = 30
+  url = "https://www.linkedin.com/in/marek-maksimczyk-532a4358"
+[[social]]
+  name = "rss"
+  weight = 40
+  url = "index.xml"

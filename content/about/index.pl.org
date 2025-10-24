@@ -1,0 +1,13 @@
+#+title: O mnie
+#+date: [2025-10-08 15:00]
+#+lastmod: [2025-10-24 15:47]
+
+Nazywam się Marek Maksimczyk.
+
+#+attr_html: :width 300 :align left :class image :style padding:20px 
+#+caption: 
+[[file:marek.jpg]]
+
+Pracuję jako inżynier DevOps z bogatym doświadczeniem w dziedzinie programowania. Moje doświadczenie obejmuje projektowanie i zarządzanie infrastrukturą w AWS, uruchamianie i skalowanie obciążeń za pomocą Kubernetes oraz wdrażanie infrastruktury jako kodu (IoT) za pomocą Terraform. Koncentruję się na konfigurowaniu i utrzymywaniu pełnych potoków programistycznych z CI/CD, usprawnianiu przepływów pracy programistów oraz zapewnianiu niezawodności, skalowalności i łatwości obsługi systemów.
+
+Zanim specjalizowałem się w DevOps, pracowałem jako programista backendu i full-stacku w PHP i JavaScript. Nadal aktywnie programuję i obecnie piszę kod w Pythonie, Golangu, PHP i JavaScript. Lubię tworzyć usługi backendowe, zgłębiać programowanie na poziomie systemu i stosować praktyki inżynierii oprogramowania zarówno w infrastrukturze, jak i w rozwoju aplikacji.
