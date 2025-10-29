@@ -1,6 +1,6 @@
 
-name: Build and publish webpage
-run-name: Build and publish webpage
+name: Build and publish website
+run-name: Build and publish website
 on: 
     push:
         paths:
@@ -23,22 +23,20 @@ jobs:
         - name: Upload artifact
           uses: actions/upload-artifact@v4
           with:
-            name: webpage
+            name: website
             path: ./hugo/public
             if-no-files-found: error
                 
     Publish:
         needs: Build
         runs-on: ubuntu-latest
-        container:
-            image: "amazon/aws-cli:2.31.24"
         steps:
         - name: Dowload artifact
           uses: actions/download-artifact@v5
           with:
-            name: webpage
+            name: website
             path: public
-        # TODO: Add real action to publish webpage and invalidate CF cache
+        # TODO: Add real action to publish website and invalidate CF cache
         - name: Debug
           run: |
                ls -R
