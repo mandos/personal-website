@@ -27,7 +27,6 @@ jobs:
             path: ./hugo/public
             if-no-files-found: error
                 
-
     Publish:
         needs: Build
         runs-on: ubuntu-latest
@@ -35,7 +34,7 @@ jobs:
             image: "amazon/aws-cli:2.31.24"
         steps:
         - name: Dowload artifact
-          uses: actions/dowload-artifact@v5
+          uses: actions/download-artifact@v5
           with:
             name: webpage
         - name: Debug
