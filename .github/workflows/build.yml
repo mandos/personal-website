@@ -7,18 +7,27 @@ on: push
     #       - 'hugo/**' 
     #       - 'content/**'
 jobs:
-      Build:
+    Checkout:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout
+          uses: action/checkout@v5
+        - name: Debug
+          run: |
+            pwd
+            ls -al
+        
+    Build:
         runs-on: ubuntu-latest
         container:
             image: docker.io/hugomods/hugo:base
             # build --cleanDestinationDir -s ./hugo --ignoreCache
         steps:
-        # - name: Checkout
-        #   uses: action/checkout@v5  
         - name: List env
           run: |
                env | sort
         - name: List files 
           run: |
-               ls -al
+            pwd
+            ls -al
 
