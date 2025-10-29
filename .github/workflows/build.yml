@@ -35,7 +35,7 @@ jobs:
             image: "amazon/aws-cli:2.31.24"
         steps:
         - name: Dowload artifact
-          uses: actions/dowload-artifact@v4
+          uses: actions/dowload-artifact@v5
           with:
             name: webpage
         - name: Debug
