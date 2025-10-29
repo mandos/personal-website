@@ -17,6 +17,6 @@ jobs:
         - name: Generating page...
           run: |
                ls -al hugo
-               build --cleanDestinationDir -s ./hugo --ignoreCache
+               hugo build --cleanDestinationDir -s ./hugo --ignoreCache
                ls -al hugo/public 
 
