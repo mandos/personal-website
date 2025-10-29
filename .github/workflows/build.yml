@@ -1,6 +1,6 @@
 
-name: Build and deploy webpage
-run-name: Build and deploy webpage
+name: Build and publish webpage
+run-name: Build and publish webpage
 on: push
     # push:
     #     paths:
@@ -10,7 +10,7 @@ jobs:
     Build:
         runs-on: ubuntu-latest
         container:
-            image: docker.io/hugomods/hugo:ci-0.152.2
+            image: "docker.io/hugomods/hugo:ci-0.152.2"
         steps:
         - name: Checkout
           uses: actions/checkout@v5  
@@ -21,3 +21,11 @@ jobs:
                hugo build --cleanDestinationDir --source ./hugo --ignoreCache
                ls -al hugo/public 
 
+    Publish:
+        runs-on: ubuntu-latest
+        container:
+            image: "amazon/aws-cli:2.31.24"
+        steps:
+        - name: Debug
+          run: |
+               ls -al
