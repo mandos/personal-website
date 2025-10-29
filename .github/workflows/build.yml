@@ -1,11 +1,11 @@
 
 name: Build and deploy webpage
 run-name: ${{github.actor}} is testing
-on:
-    push:
-        paths:
-          - 'hugo/**' 
-          - 'content/**'
+on: push
+    # push:
+    #     paths:
+    #       - 'hugo/**' 
+    #       - 'content/**'
 jobs:
       Build:
         runs-on: ubuntu-latest
