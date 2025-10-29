@@ -13,10 +13,9 @@ jobs:
             image: docker.io/hugomods/hugo:base
             # build --cleanDestinationDir -s ./hugo --ignoreCache
         steps:
+        - name: Checkout
+          uses: action/checkout@v5  
         - name: List files 
           run: |
-               ls 
-        - name: List files in the repository
-          run: |
-               ls ${{ github.workspace }}
+               ls -al
 
