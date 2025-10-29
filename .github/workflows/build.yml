@@ -22,6 +22,7 @@ jobs:
                ls -al hugo/public 
 
     Publish:
+        needs: Build
         runs-on: ubuntu-latest
         container:
             image: "amazon/aws-cli:2.31.24"
