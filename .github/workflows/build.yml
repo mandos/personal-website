@@ -16,7 +16,7 @@ jobs:
           uses: actions/checkout@v5  
         - name: Generating page...
           run: |
-               ls -al hugo/public 
+               ls -al hugo
                build --cleanDestinationDir -s ./hugo --ignoreCache
                ls -al hugo/public 
 
