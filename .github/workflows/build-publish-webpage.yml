@@ -1,11 +1,11 @@
 
 name: Build and publish webpage
 run-name: Build and publish webpage
-on: push
-    # push:
-    #     paths:
-    #       - 'hugo/**' 
-    #       - 'content/**'
+on: 
+    push:
+        paths:
+          - 'hugo/**' 
+          - 'content/**'
 jobs:
     Build:
         runs-on: ubuntu-latest
@@ -37,6 +37,8 @@ jobs:
           uses: actions/download-artifact@v5
           with:
             name: webpage
+            path: public
+        # TODO: Add real action to publish webpage and invalidate CF cache
         - name: Debug
           run: |
                ls -R
