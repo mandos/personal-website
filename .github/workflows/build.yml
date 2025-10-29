@@ -1,5 +1,6 @@
 
 name: Build and deploy webpage
+run-name: Build and deploy webpage
 on: push
     # push:
     #     paths:
