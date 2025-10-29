@@ -1,0 +1,44 @@
+
+name: Build and publish webpage
+run-name: Build and publish webpage
+on: 
+    push:
+        paths:
+          - 'hugo/**' 
+          - 'content/**'
+jobs:
+    Build:
+        runs-on: ubuntu-latest
+        container:
+            image: "docker.io/hugomods/hugo:ci-0.152.2"
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v5  
+        - name: Generating page...
+          run: |
+               ls -al hugo
+               hugo mod vendor --source ./hugo
+               hugo build --cleanDestinationDir --source ./hugo --ignoreCache
+               ls -al hugo/public 
+        - name: Upload artifact
+          uses: actions/upload-artifact@v4
+          with:
+            name: webpage
+            path: ./hugo/public
+            if-no-files-found: error
+                
+    Publish:
+        needs: Build
+        runs-on: ubuntu-latest
+        container:
+            image: "amazon/aws-cli:2.31.24"
+        steps:
+        - name: Dowload artifact
+          uses: actions/download-artifact@v5
+          with:
+            name: webpage
+            path: public
+        # TODO: Add real action to publish webpage and invalidate CF cache
+        - name: Debug
+          run: |
+               ls -R
