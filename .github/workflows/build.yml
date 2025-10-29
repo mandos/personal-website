@@ -12,22 +12,24 @@ jobs:
         steps:
         - name: Checkout
           uses: action/checkout@v5
+          with:
+            sparse-checkout: .
         - name: Debug
           run: |
             pwd
             ls -al
         
-    Build:
-        runs-on: ubuntu-latest
-        container:
-            image: docker.io/hugomods/hugo:base
-            # build --cleanDestinationDir -s ./hugo --ignoreCache
-        steps:
-        - name: List env
-          run: |
-               env | sort
-        - name: List files 
-          run: |
-            pwd
-            ls -al
+    # Build:
+    #     runs-on: ubuntu-latest
+    #     container:
+    #         image: docker.io/hugomods/hugo:base
+    #         # build --cleanDestinationDir -s ./hugo --ignoreCache
+    #     steps:
+    #     - name: List env
+    #       run: |
+    #            env | sort
+    #     - name: List files 
+    #       run: |
+    #         pwd
+    #         ls -al
 
