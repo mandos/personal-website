@@ -10,13 +10,14 @@ jobs:
     Build:
         runs-on: ubuntu-latest
         container:
-            image: docker.io/hugomods/hugo:base
+            image: docker.io/hugomods/hugo:ci-0.152.2
         steps:
         - name: Checkout
           uses: actions/checkout@v5  
         - name: Generating page...
           run: |
                ls -al hugo
-               hugo build --cleanDestinationDir -s ./hugo --ignoreCache
+               hugo mod vendor --source ./hugo
+               hugo build --cleanDestinationDir --source ./hugo --ignoreCache
                ls -al hugo/public 
 
