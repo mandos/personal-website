@@ -33,14 +33,18 @@ jobs:
         needs: Build
         runs-on: ubuntu-latest
         steps:
+        - name: Checkout scripts
+          uses: actions/checkout@v5  
+          with:
+            sparse-checkout: scripts
         - name: Dowload artifact
           uses: actions/download-artifact@v5
           with:
             name: website
             path: public
-        - name: Checkout
-          uses: actions/checkout@v5  
-          with:
-            sparse-chechout: scripts
         - name: Deploy website
+          env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           run: ./scripts/deploy.sh ./public
+          
