@@ -17,7 +17,7 @@ weight = 30
   name = "mail"
   type = "social"
   weight = 10
-  url = "mailto:marek.maksimczyk+page@mandos.net.pl"
+  url = "mailto:marek.maksimczyk+website@mandos.net.pl"
 [[social]]
   name = "github"
   type = "social"
