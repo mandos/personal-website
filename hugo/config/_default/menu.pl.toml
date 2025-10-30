@@ -1,11 +1,11 @@
 [[main]]
-name = 'Blog'
-pageRef = '/blog'
+name = 'O mnie'
+pageRef = '/about'
 weight = 10
 
 [[main]]
-name = 'O mnie'
-pageRef = '/about'
+name = 'Blog'
+pageRef = '/blog'
 weight = 20
 
 [[main]]
