@@ -36,5 +36,9 @@ jobs:
           with:
             name: website
             path: public
+        - name: Checkout
+          uses: actions/checkout@v5  
+          with:
+            sparse-chechout: scripts
         - name: Deploy website
           run: ./scripts/deploy.sh ./public
