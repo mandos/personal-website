@@ -4,6 +4,9 @@
     "hugo@latest",
     "go@latest"
   ],
+  "env": {
+    "AWS_PROFILE": "personal-website.deployer",
+  },
   "shell": {
     "init_hook": [
       "echo 'Welcome to devbox!' > /dev/null"
