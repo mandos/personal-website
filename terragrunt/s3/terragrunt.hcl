@@ -1,5 +1,5 @@
 include "root" {
-  path = find_in_parent_folders()
+  path = find_in_parent_folders("root.hcl")
 }
 
 terraform {
@@ -7,11 +7,13 @@ terraform {
 }
 
 inputs = {
-  bucket = "mandos.net.pl"
+  bucket                  = "mandos.net.pl"
+  block_public_policy     = false
+  block_public_acl        = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+
   website = {
-    redirect_all_requests_to = {
-      protocol  = "https"
-      host_name = "www.linkedin.com/in/marek-maksimczyk-532a4358/"
-    }
+    index_document = "index.html"
   }
 }
