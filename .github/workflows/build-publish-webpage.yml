@@ -36,7 +36,5 @@ jobs:
           with:
             name: website
             path: public
-        # TODO: Add real action to publish website and invalidate CF cache
-        - name: Debug
-          run: |
-               ls -R
+        - name: Deploy website
+          run: ./scripts/deploy.sh ./public
