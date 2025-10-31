@@ -1,5 +1,6 @@
 author = "Marek Maksimczyk"
 description = "Marek Maksimczyk's Personal blog about everything" # Site description. Used in meta description
+since = "2025 "
 opengraph = true # Enable OpenGraph if true
 schema = true # Enable Schema
 twitter_cards = false # Enable Twitter Cards if true

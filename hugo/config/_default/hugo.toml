@@ -1,4 +1,4 @@
-baseURL = 'https://mandos.net.pl/'
+baseURL = 'https://mandos.net.pl'
 defaultContentLanguage = 'en'
 defaultContentLanguageInSubdir = true
 disableDefaultLanguageRedirect = false
