@@ -5,5 +5,5 @@ other = "©"
 other = "Treść jest udostępniona na licencji [CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0), ia kod źródłowy na licencji [MIT](https://opensource.org/license/mit)."
 
 [powered_by]
-other = "Strona jest zasilana przez [Hugo](https://gohugo.io) z [Clarity theme](https://github.com/chipzoller/hugo-clarity), AWS and BTW I'm using [Emacsa](https://www.gnu.org/software/emacs) z [Org-modem](https://orgmode.org)"
+other = "Strona jest zasilana przez [Hugo](https://gohugo.io) z [Clarity](https://github.com/chipzoller/hugo-clarity) theme, AWS i BTW używam [Emacsa](https://www.gnu.org/software/emacs) z [Org-modem](https://orgmode.org)"
 

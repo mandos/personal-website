@@ -4,8 +4,6 @@ defaultContentLanguageInSubdir = true
 disableDefaultLanguageRedirect = false
 copyright = "Marek Maksimczyk" # Footer copyright holder, otherwise will use site title
 
-# theme = "hugo-clarity"
-
 [module]
   [module.imports]
     # path = 'github.com/vimux/mainroad'
