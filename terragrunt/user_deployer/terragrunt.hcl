@@ -10,7 +10,7 @@ dependency "cloudfront" {
   config_path = "../cloudfront"
 }
 
-dependency "s3"  {
+dependency "s3" {
   config_path = "../s3"
 }
 

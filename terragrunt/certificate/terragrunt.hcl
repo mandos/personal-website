@@ -1,16 +1,17 @@
 terraform {
-  source = "tfr:///terraform-aws-modules/acm/aws?version=6.1.1"
+  source = "../modules/certificate/"
 }
 
 include "root" {
   path = find_in_parent_folders("root.hcl")
 }
 
+include "privider_cloudflare" {
+  path = find_in_parent_folders("provider_cloudflare.hcl")
+}
+
 inputs = {
   domain_name = "mandos.net.pl"
-
-  validation_method      = "DNS"
-  create_route53_records = false
 
   subject_alternative_names = [
     "*.mandos.net.pl",
