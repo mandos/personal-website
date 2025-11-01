@@ -6,6 +6,10 @@ include "root" {
   path = find_in_parent_folders("root.hcl")
 }
 
+include "aws" {
+  path = find_in_parent_folders("provider_aws.hcl")
+}
+
 include "privider_cloudflare" {
   path = find_in_parent_folders("provider_cloudflare.hcl")
 }

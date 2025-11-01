@@ -1,9 +1,13 @@
+terraform {
+  source = "../modules/dns/"
+}
+
 include "root" {
   path = find_in_parent_folders("root.hcl")
 }
 
-terraform {
-  source = "../modules/dns/"
+include "provider_cloudfront" {
+  path = find_in_parent_folders("provider_cloudflare.hcl")
 }
 
 dependency "cloudfront" {

@@ -1,9 +1,13 @@
+terraform {
+  source = "tfr:///terraform-aws-modules/s3-bucket/aws?version=3.15.1"
+}
+
 include "root" {
   path = find_in_parent_folders("root.hcl")
 }
 
-terraform {
-  source = "tfr:///terraform-aws-modules/s3-bucket/aws?version=3.15.1"
+include "aws" {
+  path = find_in_parent_folders("provider_aws.hcl")
 }
 
 inputs = {
