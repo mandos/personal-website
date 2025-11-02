@@ -1,4 +1,3 @@
-
 generate "backend" {
   path      = "auto-backend.tf"
   if_exists = "overwrite_terragrunt"
