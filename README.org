@@ -1,13 +1,9 @@
-#+lastmod: [2025-11-02 13:19]
+#+lastmod: [2025-11-03 10:50]
 * Personal Web Page
 
-* Site generating
-** Setup Jekyll
-
-* Infrastructure
-
-Code for infrastructure (folder _infra_) is in Terraform with Terragrunt as a wrapper. The page is hosted on AWS S3.
-
 * License
+Copyright (c) 2025 Marek Maksimczyk <marek.maksimczyk@mandos.net.pl>
 
-Source code is licensed under [MIT License](./LICENSE), content is licensed under [CC BY 4.0](./content/LICENSE.md)
+The content on this website is licensed under the [[./content/LICENSE][Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License]].
+
+The source code is licensed under the [[./CODE_LICENSE][MIT License]].
