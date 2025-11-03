@@ -15,6 +15,10 @@ dependency "certificate" {
   config_path = "../certificate"
 }
 
+dependency "cloudfront_common" {
+  config_path = "../cloudfront_common/"
+}
+
 inputs = {
   aliases = ["mandos.net.pl", "www.mandos.net.pl"]
 
@@ -68,7 +72,7 @@ inputs = {
     viewer_protocol_policy = "redirect-to-https"
     use_forwarded_values   = false
 
-    cache_policy_id = "658327ea-f89d-4fab-a63d-7e88639e58f6"
+    cache_policy_id = dependency.cloudfront_common.outputs.caching_policies_ids.managed_cachingoptimized
 
     allowed_methods = ["GET", "HEAD"]
     cached_methods  = ["GET", "HEAD"]
@@ -77,7 +81,7 @@ inputs = {
 
     function_association = {
       viewer-request = {
-        function_arn = "arn:aws:cloudfront::545927974903:function/index_redirection"
+        function_arn = dependency.cloudfront_common.outputs.function_arns.index_html_redirection
       }
     }
   }

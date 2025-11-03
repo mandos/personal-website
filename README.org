@@ -1,3 +1,4 @@
+#+lastmod: [2025-11-02 13:19]
 * Personal Web Page
 
 * Site generating
@@ -9,4 +10,4 @@ Code for infrastructure (folder _infra_) is in Terraform with Terragrunt as a wr
 
 * License
 
-For code is licensed under [MIT License](./LICENSE), content is licensed under [CC BY 4.0](./content/LICENSE.md)
+Source code is licensed under [MIT License](./LICENSE), content is licensed under [CC BY 4.0](./content/LICENSE.md)
