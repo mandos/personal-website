@@ -7,6 +7,7 @@ twitter_cards = false # Enable Twitter Cards if true
 readmore = true # Show "Read more" button in list if true
 authorbox = false # Show authorbox at bottom of pages if true
 toc = true # Enable Table of Contents
+codeLineNumbers = true
 pager = true # Show pager navigation (prev/next links) at the bottom of pages if true
 post_meta = ["author", "date", "categories", "translations" ] # Order of post meta information
 mainSections = ["blog"] #
