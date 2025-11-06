@@ -1,6 +1,6 @@
 #+title: Static website hosting on AWS S3 with Terragrunt as IaC 
 #+date: [2025-11-03 11:06]
-#+lastmod: [2025-11-06 12:47]
+#+lastmod: [2025-11-06 15:52]
 #+showLastmod: true
 #+filetags: :aws:terragrunt:
 #+categories[]: tech
@@ -12,9 +12,9 @@
 * Introduction
 
 In this article, I would like to descibe a simple hosting solution for a static website built using on AWS CloudFront and S3. Additionally, I will present process of creating and importing this infrastructure as Terraform code. I'm not going to explain every aspect of the process, so some familiarity with AWS, Terraform/OpenTofu and Terragrunt is required (or at least a willingness to expore these topics further)
-#+begin_comment
-This is *NOT* step-by-step guide on setting up CloudFront and S3 - there are better articles available for that ([[#references][1]]), including some in the AWS documentation ([[#references][2]], [[#references][3]])
-#+end_comment
+{{< notice warning "WARNING" >}}
+This is *NOT* step-by-step guide on setting up CloudFront and S3 - there are better articles available for that (reference 1), including some in the AWS documentation (references: 2, 3)
+{{< /notice >}}
 
 The full solution is available in the [[https://github.com/mandos/personal-website][github.com/mandos/personal-website]] repository (dir: [[https://github.com/mandos/personal-website/tree/master/terragrunt][/terragrunt]]).
 
@@ -35,10 +35,9 @@ Last but not least, choosing Terragrunt/Terraform as the main tool for infrastru
 Ther architecture is quite simple: a publicly accessible S3 bucket with the website hosting feature enabled, and CloudFront distribution pointing to this S3 bucket. AWS Certificate Manager provides an SSL/TLS certificate for CloudFront, certificate verification is done using DNS records. It's worth mentioning that the certificate must be generated in the us-east-1 (N. Virginia) region. As part of the AWS setup, there's also an IAM User responsible for deploying the website to S3 and invalidating the CloudFront cache. The cherry on top is an AWS Budget - to make sure my cheap hosting stays cheap.
 
 The Cloudflare setup includes DNS verification records for the AWS certificate and a CNAME record for the apex domain pointing to CloudFront (handled through [[https://developers.cloudflare.com/dns/cname-flattening][CNAME flattening]]). It also includes a redirect from the =www= subdomain to the apex domain.
-
-#+begin_comment
-TODO: Implement the infrastructure described in the next paragraph.
-#+end_comment
+{{< notice warning "TODO" >}}
+Implement the infrastructure for logging.
+{{< /notice >}}
 
 To keeps logs from CloudFront and S3 I created an additional S3 Bucket - this time with private access only.
 
@@ -66,10 +65,9 @@ As mentioned in [[#architecture][the Architecture]] section, the setup is simple
 
 This allows us not to worry about URLS ending with "=/=", because the bucket automaticaly servers *index.html* from subdirectories. The downside of this solutions is that there is still direct access to the S3 bucket, bypassing Cloudfront.
 
-#+begin_comment
+{{< notice info "NOTE" >}}
 As a side note, the website will be kept in the bucket's root directory.
-#+end_comment
-
+{{< /notice >}}
 
 An alternative approach would be to set up private access to the bucket (turn =Block Public Access= on), disable =Static Website Hosting=, and allow access to the bucket only through CloudFront using =Orgin Access Control(OAC)= or the legacy =Origin Access Identity(OAI)= ([[#references][4]]). In this setup, we also need to handle *index.html* delivery for URLs ending with "=/=", which can be easly achived using a [[https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/example_cloudfront_functions_url_rewrite_single_page_apps_section.html][CloudFront function]].
 
@@ -157,9 +155,10 @@ One of the nice features of this setup is setting a budged ([[#references][5]]).
 In the current setup, the budget is configured as a *montly recurring* budget with a fixed value, based on *unblended costs*. I created only one alert -  at 80% of the forecasted costs - which send me an email (no actions configured).
 
 *** S3 Logs 
-#+begin_comment
-TODO
-#+end_comment
+{{< notice warning "TODO" >}}
+Prepare this setup
+{{< /notice >}}
+
 
 ** CloudFlare 
 :PROPERTIES:
@@ -169,6 +168,8 @@ TODO
 Again, the setup is not complicated at all. Create a CNAME record for the *apex domain* pointing to the CloudFront domain. Add another CNAME record for the *www* subdomain pointing to the *apex domain*, and one or more records for AWS certificate validation.
 
 * IaC with Terragrunt
+
+{{< comments/email >}}
 
 * References
 :PROPERTIES:

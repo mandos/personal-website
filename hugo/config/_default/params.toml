@@ -1,5 +1,5 @@
 author = "Marek Maksimczyk"
-description = "Marek Maksimczyk's Personal blog about everything" # Site description. Used in meta description
+description = "Marek Maksimczyk's personal blog about everything" # Site description. Used in meta description
 since = "2025 "
 opengraph = true # Enable OpenGraph if true
 schema = true # Enable Schema
@@ -18,13 +18,17 @@ mathjaxConfig = "TeX-AMS-MML_HTMLorMML" # Specify MathJax config
 googleFontsLink = "https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700" # Load Google Fonts
 languageMenuName = "🌐"
 
+[comments]
+  email_user = "marek-maksimczyk+blog"
+  email_domain = "mandos.net.pl"
+
 [thumbnail]
   visibility = ["list", "post"] # Control thumbnail visibility
 
 [sidebar]
   home = "right" # Configure layout for home page
   list = "left"  # Configure layout for list pages
-  single = false # Configure layout for single pages
+  single = true # Configure layout for single pages
   # Enable widgets in given order
   widgets = ["search", "recent", "categories", "taglist", "social", "languages"]
 

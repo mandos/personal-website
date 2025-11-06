@@ -1,0 +1,21 @@
+{{- with .Page }}
+<a id="comments-email" class="button">Leave a comment via email</a>
+
+<script>
+  const user = "{{- .Site.Params.comments.email_user -}}";
+  const domain =  "{{- .Site.Params.comments.email_domain -}}";
+  // Detect platform
+  const isWindows = navigator.platform.startsWith("Win");
+  const isMac = navigator.platform.startsWith("Mac");
+
+  // Choose correct newline
+  const newline = isWindows ? "%0D%0A" : "%0A";
+
+  // Construct email link
+  const subject = `comment:%20{{- .Title -}}`
+  const body = `${newline}Article link:%20{{- .Permalink -}}${newline}${newline}-------------------- My comment --------------------${newline}${newline}` 
+
+  const link = document.getElementById("comments-email");
+  link.href = `mailto:${user}@${domain}?subject=&body=${body}`;
+</script>
+{{- end -}}
