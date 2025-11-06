@@ -1,6 +1,6 @@
 #+title: Static website hosting on AWS S3 with Terragrunt as IaC 
 #+date: [2025-11-03 11:06]
-#+lastmod: [2025-11-06 15:52]
+#+lastmod: [2025-11-06 16:25]
 #+showLastmod: true
 #+filetags: :aws:terragrunt:
 #+categories[]: tech
@@ -63,13 +63,13 @@ As mentioned in [[#architecture][the Architecture]] section, the setup is simple
 }
 #+end_src
 
-This allows us not to worry about URLS ending with "=/=", because the bucket automaticaly servers *index.html* from subdirectories. The downside of this solutions is that there is still direct access to the S3 bucket, bypassing Cloudfront.
+This allows us not to worry about URLS ending with "*/*", because the bucket automaticaly servers *index.html* from subdirectories. The downside of this solutions is that there is still direct access to the S3 bucket, bypassing Cloudfront.
 
 {{< notice info "NOTE" >}}
 As a side note, the website will be kept in the bucket's root directory.
 {{< /notice >}}
 
-An alternative approach would be to set up private access to the bucket (turn =Block Public Access= on), disable =Static Website Hosting=, and allow access to the bucket only through CloudFront using =Orgin Access Control(OAC)= or the legacy =Origin Access Identity(OAI)= ([[#references][4]]). In this setup, we also need to handle *index.html* delivery for URLs ending with "=/=", which can be easly achived using a [[https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/example_cloudfront_functions_url_rewrite_single_page_apps_section.html][CloudFront function]].
+An alternative approach would be to set up private access to the bucket (turn *Block Public Access* on), disable *Static Website Hosting*, and allow access to the bucket only through CloudFront using *Orgin Access Control(OAC)* or the legacy *Origin Access Identity(OAI)* ([[#references][4]]). In this setup, we also need to handle *index.html* delivery for URLs ending with "*/*", which can be easly achived using a [[https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/example_cloudfront_functions_url_rewrite_single_page_apps_section.html][CloudFront function]].
 
 The bucket policy in this case should look more like this:
 
@@ -107,7 +107,7 @@ The certificate configuration is also straightforward, but since it will be used
 This service my seem like the most complex part of the entire stack, but it's actually quite manageable. I'm using two alternate domain names (the apex domain and the *www* subdomain), and attached the certificate created in [[#certificate][Certificate (ACM)]]. For the security policy, I kept the recommended *TLSv1.2_2021*. I'm not using the default root object, as this will be handled by S3 Website Hosting or a CloudFront function.
 For the price class, I chose the "middle" option (North America, Europe, Asia, Middle East, and Africa), but this depends on your needs. For now, I don't need a Web Application Firewall (WAF) or any geographic restrictions.
 
-Among other common settings, I configured a custom error page for the *403* HTTP code that points to ~/en/404.html~ and returns a *404* response. This will override access denied errors from S3. It's not a perfect solution for incorrect URLs, but it's good enough. An alternative would be implement more sophisticated solution using CloudFront functions.
+Among other common settings, I configured a custom error page for the *403* HTTP code that points to */en/404.html* and returns a *404* response. This will override access denied errors from S3. It's not a perfect solution for incorrect URLs, but it's good enough. An alternative would be implement more sophisticated solution using CloudFront functions.
 
 #+begin_comment
 TODO: Add a section with logging setup
@@ -119,7 +119,7 @@ I'm using only the defualt behaviour: *compression enabled*, *HTTP redirected to
 
 *** Deployment User (IAM)
 
-This is a straightforward setup. Because I wanted to automated website deployment, I created =IAM User= with an access key that can upload and remove data from S3 (for synchronization) and invalidate the CloudFront cache. Even if this user's credentials were compromised, at least noo ne would be able to spin up an EC2 instance farm on my account. The inline policy I used for this user looks like this:
+This is a straightforward setup. Because I wanted to automated website deployment, I created *IAM User* with an access key that can upload and remove data from S3 (for synchronization) and invalidate the CloudFront cache. Even if this user's credentials were compromised, at least noo ne would be able to spin up an EC2 instance farm on my account. The inline policy I used for this user looks like this:
 
 #+begin_src json
 {
