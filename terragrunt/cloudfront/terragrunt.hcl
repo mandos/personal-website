@@ -5,6 +5,7 @@ terraform {
 
 include "root" {
   path = find_in_parent_folders("root.hcl")
+  expose = true
 }
 
 include "aws" {
@@ -16,11 +17,11 @@ dependency "certificate" {
 }
 
 dependency "cloudfront_common" {
-  config_path = "../cloudfront_common/"
+  config_path = "../cloudfront-common/"
 }
 
 inputs = {
-  aliases = ["mandos.net.pl", "www.mandos.net.pl"]
+  aliases = [include.root.locals.stack.apex_domain, include.root.locals.stack.additional_domain ]
 
   comment             = "Because static html/css/js is too hard to handle by backend"
   enabled             = true
@@ -32,8 +33,8 @@ inputs = {
   # Only for secure access to bucket (not used for now)
   create_origin_access_control = true
   origin_access_control = {
-    s3_mandos_net_pl = {
-      description      = "Access to S3 mandos.net.pl",
+    "s3_${include.root.locals.stack.apex_domain}" = {
+      description      = "Access to S3 ${include.root.locals.stack.apex_domain}",
       origin_type      = "s3",
       signing_behavior = "always",
       signing_protocol = "sigv4"
@@ -42,14 +43,14 @@ inputs = {
 
   origin = {
     # Only for secure access to bucket (not used for now)
-    s3_mandos_net_pl = {
-      domain_name           = "mandos.net.pl.s3.eu-west-1.amazonaws.com"
-      origin_access_control = "s3_mandos_net_pl"
+    s3 = {
+      domain_name           = "${include.root.locals.stack.apex_domain}.s3.eu-west-1.amazonaws.com"
+      origin_access_control = "s3_${include.root.locals.stack.apex_domain}"
     }
 
     # Public access by S3 Webserver feature
-    s3_www_mandos_net_pl = {
-      domain_name = "mandos.net.pl.s3-website-eu-west-1.amazonaws.com"
+    s3_www = {
+      domain_name = "${include.root.locals.stack.apex_domain}.s3-website-eu-west-1.amazonaws.com"
 
       custom_origin_config = {
         http_port                = 80
@@ -65,9 +66,9 @@ inputs = {
 
   default_cache_behavior = {
     # Only for secure access to bucket (not used for now)
-    # target_origin_id = "s3_mandos_net_pl"
+    # target_origin_id = "s3"
     # Public access by S3 Webserver feature
-    target_origin_id = "s3_www_mandos_net_pl"
+    target_origin_id = "s3_www"
 
     viewer_protocol_policy = "redirect-to-https"
     use_forwarded_values   = false

@@ -21,7 +21,7 @@ resource "cloudflare_dns_record" "validation" {
   count = length(module.acm.distinct_domain_names)
 
   zone_id = data.cloudflare_zone.this.zone_id
-  comment = "AWS certificate validation record"
+  comment = "AWS certificate validation record for ${element(module.acm.validation_domains, count.index).domain_name}"
   name    = trimsuffix(element(module.acm.validation_domains, count.index).resource_record_name, ".")
   type    = element(module.acm.validation_domains, count.index).resource_record_type
   content = trimsuffix(element(module.acm.validation_domains, count.index).resource_record_value, ".")

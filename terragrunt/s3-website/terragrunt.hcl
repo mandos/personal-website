@@ -4,6 +4,7 @@ terraform {
 
 include "root" {
   path = find_in_parent_folders("root.hcl")
+  expose = true
 }
 
 include "aws" {
@@ -16,7 +17,7 @@ include "aws" {
 # }
 
 inputs = {
-  bucket        = "mandos.net.pl"
+  bucket        = include.root.locals.stack.apex_domain
   attach_policy = true
 
   # NOTE: Public access with webserver feature 
@@ -37,7 +38,7 @@ inputs = {
             "s3:GetObject"
           ]
           Effect   = "Allow"
-          Resource = "arn:aws:s3:::mandos.net.pl/*"
+          Resource = "arn:aws:s3:::${include.root.locals.stack.apex_domain}/*"
           Principal = {
             AWS = [
               "*"
@@ -64,7 +65,7 @@ inputs = {
   #         Service = "cloudfront.amazonaws.com"
   #       },
   #       Action   = "s3:GetObject",
-  #       Resource = "arn:aws:s3:::mandos.net.pl/*",
+  #       Resource = "arn:aws:s3:::${include.root.locals.stack.apex_domain}/*",
   #       Condition = {
   #         StringEquals = {
   #           "AWS:SourceArn" = dependency.cloudfront.outputs.cloudfront_distribution_arn

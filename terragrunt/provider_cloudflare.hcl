@@ -1,5 +1,5 @@
 generate "cloudflare" {
-  path      = "auto-cloudflare.tf"
+  path      = "auto-provider-cloudflare.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
 provider "cloudflare" {

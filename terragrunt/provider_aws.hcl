@@ -3,7 +3,7 @@ locals {
 }
 
 generate "aws" {
-  path      = "auto-aws.tf"
+  path      = "auto-provider-aws.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
 provider "aws" {

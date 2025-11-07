@@ -14,8 +14,8 @@ dependency "cloudfront" {
   config_path = "../cloudfront"
 }
 
-dependency "s3" {
-  config_path = "../s3"
+dependency "s3_website" {
+  config_path = "../s3-website/"
 }
 
 inputs = {
@@ -35,8 +35,8 @@ inputs = {
         "s3:DeleteObject",
       ]
       resources = [
-        "${dependency.s3.outputs.s3_bucket_arn}",
-        "${dependency.s3.outputs.s3_bucket_arn}/*",
+        "${dependency.s3_website.outputs.s3_bucket_arn}",
+        "${dependency.s3_website.outputs.s3_bucket_arn}/*",
       ]
     }
     CloudFrontInvalidation = {

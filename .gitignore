@@ -8,4 +8,5 @@ result
 .terragrunt-cache
 auto-*.tf
 infra/.envrc
+state*
 

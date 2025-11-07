@@ -1,3 +1,7 @@
+locals {
+  stack = yamldecode(file(find_in_parent_folders("stack.yaml")))
+}
+
 generate "backend" {
   path      = "auto-backend.tf"
   if_exists = "overwrite_terragrunt"

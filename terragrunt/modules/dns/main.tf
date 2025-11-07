@@ -1,17 +1,13 @@
-locals {
-  domain_name = "mandos.net.pl"
-}
-
 data "cloudflare_zone" "this" {
   filter = {
-    name = local.domain_name
+    name = var.apex_domain
   }
 }
 
 resource "cloudflare_dns_record" "main" {
   zone_id = data.cloudflare_zone.this.zone_id
   comment = "Redirect to AWS CloudFront"
-  name    = local.domain_name
+  name    = var.apex_domain
   type    = "CNAME"
   content = var.cloudfront_distribution_domain_name
   ttl     = 1
@@ -20,10 +16,10 @@ resource "cloudflare_dns_record" "main" {
 
 resource "cloudflare_dns_record" "www" {
   zone_id = data.cloudflare_zone.this.zone_id
-  comment = "Redirect to mandos.net.pl"
+  comment = "Redirect to ${var.apex_domain}"
   name    = "www"
   type    = "CNAME"
-  content = local.domain_name
+  content = var.apex_domain
   ttl     = 1
   proxied = false
 }

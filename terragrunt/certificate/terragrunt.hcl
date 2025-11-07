@@ -4,6 +4,7 @@ terraform {
 
 include "root" {
   path = find_in_parent_folders("root.hcl")
+  expose = true
 }
 
 include "aws" {
@@ -15,9 +16,9 @@ include "privider_cloudflare" {
 }
 
 inputs = {
-  domain_name = "mandos.net.pl"
+  domain_name = include.root.locals.stack.apex_domain
 
   subject_alternative_names = [
-    "*.mandos.net.pl",
+    include.root.locals.stack.additional_domain
   ]
 }
