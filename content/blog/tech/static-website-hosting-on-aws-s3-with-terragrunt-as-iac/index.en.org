@@ -1,6 +1,6 @@
 #+title: Static website hosting on AWS S3 with Terragrunt as IaC 
 #+date: [2025-11-03 11:06]
-#+lastmod: [2025-11-07 11:17]
+#+lastmod: [2025-11-07 15:29]
 #+showLastmod: true
 #+filetags: :aws:terragrunt:
 #+categories[]: tech
@@ -15,12 +15,14 @@ In this article, I would like to descibe a simple hosting solution for a static 
 {{< notice warning "DISCLAIMER" >}}
 This is *NOT* step-by-step guide on setting up CloudFront and S3 - there are better articles available for that (reference 1), including some in the AWS documentation (references: 2, 3)
 {{< /notice >}}
-
 The full solution is available in the [[https://github.com/mandos/personal-website][github.com/mandos/personal-website]] repository (dir: [[https://github.com/mandos/personal-website/tree/master/terragrunt][/terragrunt]]).
+{{< notice note "About Terraform" >}}
+In the rest of this post, when I use name Terraform, I actually mean either OpenTofu or Hashicorp Terraform. To the best of my knowledge, I don't use any features or structures that are unique to only one of these systems. 
+{{< /notice >}}
 
 * Rationale of the choice
 
-There are many cheap or even free solutions for hosting static websites. Some examples include [[https://pages.cloudflare.com/][Cloudflare Pages]] ,[[https://docs.gitlab.com/user/project/pages/][GitLab Pages, ]][[https://pages.github.com/][GitHub Pages]], [[https://www.netlify.com/][Netlify]] or even [[https://www.digitalocean.com/][DigitalOcean]]. I'm not going pretend that I performed an in-depth comparision of these solutions with AWS. Even within AWS, instead of using basic S3 and CloudFront setup, I could have used [[https://aws.amazon.com/amplify/][AWS Amplify]]. My choice was driven by my familiarity with AWS Cloud, a good balance between cost to features, and the possibility of easly extending the setup in the future with other AWS services such as databases, WAF, or Lambda functions. For this project (personal website), is good enough. If I were running a commercial or business website, I would analyze the solution more thoroughly.
+There are many cheap or even free solutions for hosting static websites. Some examples include [[https://pages.cloudflare.com/][Cloudflare Pages]], [[https://docs.gitlab.com/user/project/pages/][GitLab Pages]], [[https://pages.github.com/][GitHub Pages]], [[https://www.netlify.com/][Netlify]] or even [[https://www.digitalocean.com/][DigitalOcean]]. I'm not going pretend that I performed an in-depth comparision of these solutions with AWS. Even within AWS, instead of using basic S3 and CloudFront setup, I could have used [[https://aws.amazon.com/amplify/][AWS Amplify]]. My choice was driven by my familiarity with AWS Cloud, a good balance between cost and features, and the possibility of easly extending the setup in the future with other AWS services such as databases, WAF, or Lambda functions. For this project - personal website - this level of analysis is good enough. 
 
 The decision to manage DNS with Cloudflare was driven by the fact that my original domain provider didn't offer an easy way to redirect my main domain to the CloudFront distribution. Additionally, managing Cloudflare resourses with Terraform is quite easy, which influenced my decision. I could have used AWS Route53 for a more homogeneous setup, but why risk an outage with just one service provider when I can double the chances by using two?
 
@@ -34,16 +36,15 @@ Last but not least, choosing Terragrunt/Terraform as the main tool for infrastru
 
 Ther architecture is quite simple: a publicly accessible S3 bucket with the website hosting feature enabled, and CloudFront distribution pointing to this S3 bucket. AWS Certificate Manager provides an SSL/TLS certificate for CloudFront, certificate verification is done using DNS records. It's worth mentioning that the certificate must be generated in the us-east-1 (N. Virginia) region. As part of the AWS setup, there's also an IAM User responsible for deploying the website to S3 and invalidating the CloudFront cache. The cherry on top is an AWS Budget - to make sure my cheap hosting stays cheap.
 
-The Cloudflare setup includes DNS verification records for the AWS certificate and a CNAME record for the apex domain pointing to CloudFront (handled through [[https://developers.cloudflare.com/dns/cname-flattening][CNAME flattening]]). It also includes a redirect from the =www= subdomain to the apex domain.
+The Cloudflare setup includes DNS verification records for the AWS certificate and a CNAME record for the apex domain pointing to CloudFront (handled through [[https://developers.cloudflare.com/dns/cname-flattening][CNAME flattening]]). It also includes a redirect from the *www* subdomain to the apex domain.
 {{< notice warning "TODO" >}}
 Implement the infrastructure for logging.
 {{< /notice >}}
-
 To keeps logs from CloudFront and S3 I created an additional S3 Bucket - this time with private access only.
 
 ** AWS
 *** S3 Website
-As mentioned in [[#architecture][the Architecture]] section, the setup is simple: enable =Static Website Hosting=, set the =Index Document= to *index.html*, disable =Block Public Access=, and configure the bucket policy as follows:
+As mentioned in [[#architecture][the Architecture]] section, the setup is simple: enable *Static Website Hosting*, set the *Index Document* to *index.html*, disable *Block Public Access*, and configure the bucket policy as follows:
 
 #+begin_src json
 {
@@ -64,11 +65,9 @@ As mentioned in [[#architecture][the Architecture]] section, the setup is simple
 #+end_src
 
 This allows us not to worry about URLS ending with "*/*", because the bucket automaticaly servers *index.html* from subdirectories. The downside of this solutions is that there is still direct access to the S3 bucket, bypassing Cloudfront.
-
-{{< notice info "NOTE" >}}
+{{< notice note "Website code" >}}
 The website will be kept in the bucket's ROOT directory.
 {{< /notice >}}
-
 An alternative approach would be to set up private access to the bucket (turn *Block Public Access* on), disable *Static Website Hosting*, and allow access to the bucket only through CloudFront using *Orgin Access Control(OAC)* or the legacy *Origin Access Identity(OAI)* ([[#references][4]]). In this setup, we also need to handle *index.html* delivery for URLs ending with "*/*", which can be easly achived using a [[https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/example_cloudfront_functions_url_rewrite_single_page_apps_section.html][CloudFront function]].
 
 The bucket policy in this case should look more like this:
@@ -108,11 +107,9 @@ This service my seem like the most complex part of the entire stack, but it's ac
 For the price class, I chose the "middle" option (North America, Europe, Asia, Middle East, and Africa), but this depends on needs. For now, I don't need a Web Application Firewall (WAF) or any geographic restrictions.
 
 Among other common settings, I configured a custom error page for the *403* HTTP code that points to */en/404.html* and returns a *404* response. This will override access denied errors from S3. It's not a perfect solution for incorrect URLs, but it's good enough. An alternative would be implement more sophisticated solution using CloudFront functions.
-
 {{< notice warning "TODO" >}}
 Add a section with logging setup
 {{< /notice >}}
-
 Setting origins depends on the choosen S3 setup. In the case of *Static Website Hosting*, the orgin domain should be set to the /S3 website endpoint/. For a private S3 bucket, the origin domain shoud be the /S3 endpoint/. Additionally, an *Orgin Access Control (OAC)* must be created and attached in the /Orgin access/ settings. For connection attempts, connection timeout, and respones timeout, I kept the default values (*3*, *10*, *30*).
 
 I'm using only the defualt behaviour: *compression enabled*, *HTTP redirected to HTTPS*, and only *GET* and *HEAD* methods allowed. There are no restrictions for viewer access. I'm using the recommended *CashingOpimized* cache policy, with no origin request policy or response headers policy configured. If a private bucket is used, handling "nice URLs" (without /index.html/) must be done using a [[https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/example_cloudfront_functions_url_rewrite_single_page_apps_section.html][Viewer request function]].
@@ -159,7 +156,6 @@ In the current setup, the budget is configured as a *montly recurring* budget wi
 Prepare this setup
 {{< /notice >}}
 
-
 ** CloudFlare 
 :PROPERTIES:
 :CUSTOM_ID: cloudflare
@@ -179,12 +175,12 @@ Terragrunt promotes keeping Terraform states small, maintaining a clear separati
 
 More information can be found in [[https://terragrunt.gruntwork.io/docs][Terragrunt's documentation]].
 
-** Project structure and code details
+** Code structure 
 
 My approach was to create an implicit stack in [[https://github.com/mandos/personal-website/tree/master/terragrunt][/terragrunt]] directory. Most of the directories there are units; the one exception is //modules/ directory, which contains small modules written by me.
 
 #+begin_src 
-terragrunt 
+terragrunt
     ├── budget
     ├── certificate
     ├── cloudfront
@@ -195,20 +191,53 @@ terragrunt
     │   ├── certificate
     │   ├── cloudfront-common
     │   └── dns
-    ├── s3
-    ├── user_deployer
-    ├── root.hcl
+    ├── s3-website
+    ├── user-deployer
     ├── provider_aws.hcl
-    └── provider_cloudflare.hcl
+    ├── provider_cloudflare.hcl
+    ├── root.hcl
+    └── stack.yaml
 #+end_src
 
 I consider using [[https://terragrunt.gruntwork.io/docs/features/stacks/#choosing-between-implicit-and-explicit-stacks][an explicit stack]], but to justify the overhead of that approach, I would need at least two different environments (e.g., /dev/ and /prod/). 
 
-I used a few common files in the root stack directory (/root.hcl/, /provider-aws.hcl/, /provider-cloudflare.hcl/). The root file is responsible for backend generation, while the provider files contain code for generating each respective provider. All autogenerated files have the prefix *auto-*. In each unit's /terragrunt.hcl/ file, I always include /root.hcl/ and according the needs one or two provider files. Alternatively, everything could be places in the /root.hcl/ file, using conditional provider generation based on, for example, a local variable. 
+I used a few common files in the root stack directory (/root.hcl/, /provider-aws.hcl/, /provider-cloudflare.hcl/, /stack.yaml/). The root file is responsible for backend generation, while the provider files contain code for generating each respective provider. All autogenerated files have the prefix *auto-*. In each unit's /terragrunt.hcl/ file, I always include /root.hcl/ and according the needs one or two provider files. Alternatively, everything could be places in the /root.hcl/ file, using conditional provider generation based on, for example, a local variable. 
 
 I didn't write all the modules used in the stack myself - most of them come from the long-established [[https://github.com/terraform-aws-modules][Terraform AWS modules]] GitHub organization. As mentioned before, whenever I need custom code, I put it in the /modules/ directory. I did consider writing everything from the scratch, especially since modules tailored to my needs would be simpler and more straightforward than the generic ones designed to cover a wide range of cases - but in the end, time constains won.
+{{< notice note "Units Circular Dependencies" >}}
+This is always tricky ground — finding the right way to separate units, especially when third-party modules are involved. In some scenarios, separating units works fine; in others, it creates circular dependencies. A good example is S3 Bucket and CloudFront. For a public bucket, the dependency exists only on the CloudFront side. However, when using OAC, the bucket policy must include information about CloudFront, creating a circular relationship.
+There are two possible solutions to this problem:
+1. Combine both modules into a single Terraform state (unit).
+   This usually resolves the issue, since the bucket policy is a separate resource and Terraform can build a correct DAG automatically.
+2. Keep the modules in separate units, but hardcode some values — in this case, the CloudFront distribution details.
+The first solution is cleaner, but the second one was easier to implement and still allowed me to maintain small, focused units.
+{{< /notice >}}
+The solution is tailored to my needs, but I've tried to avoid hardcoded values as much as possible, even using the /stack.yaml/ file to store certain values used in the units. I expose these values through the /root.hcl/ file, although there could be also hcl file with locals [[https://terragrunt.gruntwork.io/docs/features/includes/#using-exposed-includes][directly included in the unit]].
 
 ** Working with code and importing resources
+
+The perfect approach to IaC would be to simple sit down, write some code, apply the configuration to the real infrastructure, test it (automatically), and open a bottle of champagne. Unfortunately, this can be done with a high level of familiarity - not only with the infrastructure systems being configured but also with Terraform's abstraction layer (resourses and modules). Good autocompletion tools can help mitigate this to some extent, but nothing replaces solid, hand-on knowledge.
+
+For this setup, I had already created some parts of the infrastructure in the AWS Console, but had almost no code. I also wasn't entiresly sure whether everything was configured correctly - for example, I was still undecided between using a plbuic or private bucket.
+My usual workflow looks like this:
+1. Write some code for part of the solution (usually a Terragrunt unit).
+2. Import the existing configuration using *terragrunt import*.
+3. Adjust the code to synchronize it with the current infrastructure.
+4. Test different variants of configuration:
+   + If changes are made directly in AWS Console, I have to apply step 3.
+   + If changes are made directly in code, I'm done.
+
+Once I was satisfied with the results, I moved on to the next unit (step 1) and repeated the process.
+{{< notice tip "Importing resources" >}}
+Usually, importing resources is not a big problem - the parameters required by import are descibed in provider's documentation, and values like ID or name can be found in AWS Console or a similar tool. One problem I encountred was importing Cloudflare DNS records, which required ID that I couldn't find in the Cloudflare Dashboard. The only way I found to do it was using API to retrieve this information (https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/list/)
+{{< /notice >}}
+
+* Summary 
+
+At the end, I achieved what I wanted — a simple and cost-effective setup for static website hosting, fully managed through infrastructure-as-code. Both parts of the solution can still be improved. For example, I currently don’t have access logs, only some CloudFront telemetry and reports (which, by the way, are quite good).
+
+The code itself could also be made more generic to form a complete static hosting solution as a dedicated Terragrunt stack.
+Overall, though, I’m quite happy with how the setup turned out.
 
 * Comments 
 
