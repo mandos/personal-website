@@ -13,9 +13,9 @@
 
   // Construct email link
   const subject = `comment:%20{{- .Title -}}`
-  // const mailBody = `${newline}Article link:%20{{- .Permalink -}}${newline}${newline}-------------------- My comment --------------------${newline}${newline}` 
+  const mailBody = `${newline}Article link:%20{{- .Permalink -}}${newline}${newline}-------------------- My comment --------------------${newline}${newline}` 
 
   const link = document.getElementById("comments-email");
-  link.href = `mailto:${user}@${domain}?subject=&body={mailBody}`;
+  link.href = `mailto:${user}@${domain}?subject=&body=${mailBody}`;
 </script>
 {{- end -}}
