@@ -1,9 +1,8 @@
 #+title: Static website hosting on AWS S3 with Terragrunt as IaC 
 #+date: [2025-11-03 11:06]
-#+lastmod: [2025-11-19 11:22]
+#+lastmod: [2025-12-16 15:01]
 #+showLastmod: true
 #+filetags: :aws:terragrunt:
-#+categories[]: tech
 #+tags[]: aws terragrunt
 #+toc: true
 #+description: Overview of hosting a static website on AWS S3 and CloudFront with Cloudflare DNS, managed via Terraform and Terragrunt. Includes example setups and configuration options.

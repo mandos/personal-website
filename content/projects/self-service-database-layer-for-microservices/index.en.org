@@ -1,0 +1,41 @@
+#+title: Self-Service Database Layer for Microservices
+#+lastmod: [2025-12-16 12:58]
+
+* Role
+DevOps Engineer (design and implementation)
+
+* Description
+The goal of the project was to prepare a process that enabled development teams to create PostgreSQL-based database infrastructure for their microservices. The process was designed to integrate seamlessly into the existing development workflow while keeping infrastructure and application concerns clearly separated and minimizing the impact of configuration mistakes made by developers. The application was deployed on EKS (AWS-managed Kubernetes), and all infrastructure was provisioned in the AWS cloud.
+
+* Requirements
+- Separation of concerns: Development teams could create infrastructure only indirectly through a well-defined API. Ownership of infrastructure tooling and core Terraform code remained with the DevOps team, allowing internal changes and improvements to be introduced seamlessly as long as the API contract was not impacted.
+- Infrastructure as Code: All infrastructure was to be created using Terraform in a way that allowed DevOps teams to inspect stack changes and introduce improvements independently of development workflows.
+- Automation: The process needed to be as automated as possible to avoid unnecessary involvement from DevOps engineers. Developers were expected to have tooling that enabled them to complete most, if not all, required tasks without delays.
+- Safety: The system was required to prevent destructive actions on customer data, whether caused by configuration mistakes or malicious actors.
+- Extensibility: The system was designed to support future expansion beyond databases, enabling additional infrastructure components required by microservices to be added later.
+
+* Solution
+All automation was implemented using GitLab CI/CD and Terraform. Development teams collected microservice requirements in a single, centralized location. Any changes to these requirements triggered infrastructure pipelines through a GitLab component that I provided.
+
+The data exchanged during this process was defined using an agreed JSON format and validated against a JSON Schema. When all inputs were valid, the infrastructure pipelines generated or modified Terraform code and provisioned the required AWS cloud resources. All data produced by this process and required by microservices was stored in HashiCorp Vault, where it could be accessed only by authorized applications.
+
+AWS resources included IAM roles and policies for microservices. For PostgreSQL, Aurora PostgreSQL was selected due to its scalability; however, the process of creating database instances was outside the scope of this project, and developers could choose which instance their application should use. Terraform was also used to create and manage internal PostgreSQL databases and role configurations, with safeguards in place to prevent accidental data loss.
+
+I also modified the Helm charts used by microservices to align them with AWS IAM role configuration and introduced additional improvements.
+
+The Terraform codebase consisted of a mix of in-house modules and well-established third-party modules. As part of the process, Terraform code was subjected to security scanning. The infrastructure was divided into small, isolated components, resulting in smaller Terraform state files per microservice and environment. This approach improved pipeline recovery from random failures, enabled parallel deployments, and resulted in a cleaner and more traceable Git commit history.
+
+To improve visibility of changes, I implemented integration with Microsoft Teams, and deployment notifications were sent to a dedicated channel. This provided the DevOps team with clear insight into activities related to this part of the infrastructure.
+
+* Deliverables
+- Design and technical documentation.
+- Terraform modules covering microservice configuration requirements.
+- GitLab components used to trigger infrastructure pipelines, validate inputs, and support auxiliary automation tasks.
+- GitLab CI/CD pipelines responsible for generating and modifying infrastructure code and provisioning cloud resources.
+
+* Outcome
+As a result, development teams gained a self-service tool to provision parts of the infrastructure required by their microservices without direct involvement from DevOps teams, which made the development process faster and smoother.
+
+For DevOps teams, several operational responsibilities were shifted away from day-to-day provisioning, allowing them to focus on maintaining the codebase and handling non-standard or exceptional situations, while still retaining full visibility and control over infrastructure and changes.
+  
+  
