@@ -1,6 +1,6 @@
-#+title: Projects 
+#+title: Projects
 #+lastmod: [2025-12-16 14:57]
 
 * Selected Professional Case Studies
-** [[self-service-database-layer-for-microservices][Self-Service Database Layer for Microservices]] 
-** [[gitlab-projects-migration][GitLab Project Migration]] 
+** [[self-service-database-layer-for-microservices][Self-Service Database Layer for Microservices]]
+** [[gitlab-projects-migration][GitLab Project Migration]]

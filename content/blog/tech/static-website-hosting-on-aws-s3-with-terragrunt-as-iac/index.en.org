@@ -1,4 +1,4 @@
-#+title: Static website hosting on AWS S3 with Terragrunt as IaC 
+#+title: Static website hosting on AWS S3 with Terragrunt as IaC
 #+date: [2025-11-03 11:06]
 #+lastmod: [2025-12-16 15:01]
 #+showLastmod: true
@@ -10,24 +10,24 @@
 
 * Introduction
 
-In this article, I would like to descibe a simple hosting solution for a static website built using on AWS CloudFront and S3. Additionally, I will present process of creating and importing this infrastructure as Terraform code. I'm not going to explain every aspect of the process, so some familiarity with AWS, Terraform/OpenTofu and Terragrunt is required (or at least a willingness to expore these topics further)
+In this article, I would like to describe a simple hosting solution for a static website built using on AWS CloudFront and S3. Additionally, I will present process of creating and importing this infrastructure as Terraform code. I'm not going to explain every aspect of the process, so some familiarity with AWS, Terraform/OpenTofu and Terragrunt is required (or at least a willingness to expore these topics further)
 {{% notice warning "DISCLAIMER" %}}
 This is *NOT* step-by-step guide on setting up CloudFront and S3 - there are better articles available for that [[[#footnotes][1]]], including some in the AWS documentation [[[#footnotes][2]]][[[#footnotes][3]]]
 {{% /notice %}}
 The full solution is available in the [[https://github.com/mandos/personal-website][github.com/mandos/personal-website]] repository (dir: [[https://github.com/mandos/personal-website/tree/master/terragrunt][/terragrunt]]).
 {{% notice note "About Terraform" %}}
-In the rest of this post, when I use name Terraform, I actually mean either OpenTofu or Hashicorp Terraform. To the best of my knowledge, I don't use any features or structures that are unique to only one of these systems. 
+In the rest of this post, when I use name Terraform, I actually mean either OpenTofu or Hashicorp Terraform. To the best of my knowledge, I don't use any features or structures that are unique to only one of these systems.
 {{% /notice %}}
 
 * Rationale of the choice
 
-There are many cheap or even free solutions for hosting static websites. Some examples include [[https://pages.cloudflare.com/][Cloudflare Pages]], [[https://docs.gitlab.com/user/project/pages/][GitLab Pages]], [[https://pages.github.com/][GitHub Pages]], [[https://www.netlify.com/][Netlify]] or even [[https://www.digitalocean.com/][DigitalOcean]]. I'm not going pretend that I performed an in-depth comparision of these solutions with AWS. Even within AWS, instead of using basic S3 and CloudFront setup, I could have used [[https://aws.amazon.com/amplify/][AWS Amplify]]. My choice was driven by my familiarity with AWS Cloud, a good balance between cost and features, and the possibility of easly extending the setup in the future with other AWS services such as databases, WAF, or Lambda functions. For this project - personal website - this level of analysis is good enough. 
+There are many cheap or even free solutions for hosting static websites. Some examples include [[https://pages.cloudflare.com/][Cloudflare Pages]], [[https://docs.gitlab.com/user/project/pages/][GitLab Pages]], [[https://pages.github.com/][GitHub Pages]], [[https://www.netlify.com/][Netlify]] or even [[https://www.digitalocean.com/][DigitalOcean]]. I'm not going pretend that I performed an in-depth comparision of these solutions with AWS. Even within AWS, instead of using basic S3 and CloudFront setup, I could have used [[https://aws.amazon.com/amplify/][AWS Amplify]]. My choice was driven by my familiarity with AWS Cloud, a good balance between cost and features, and the possibility of easly extending the setup in the future with other AWS services such as databases, WAF, or Lambda functions. For this project - personal website - this level of analysis is good enough.
 
 The decision to manage DNS with Cloudflare was driven by the fact that my original domain provider didn't offer an easy way to redirect my main domain to the CloudFront distribution. Additionally, managing Cloudflare resourses with Terraform is quite easy, which influenced my decision. I could have used AWS Route53 for a more homogeneous setup, but why risk an outage with just one service provider when I can double the chances by using two?
 
 Last but not least, choosing Terragrunt/Terraform as the main tool for infrastructure as Code was driven by my familiarity with it, my desire to refresh my knowledge, and my belief that infrastructure should always be managed through code. Maybe in this case it's a bit of overeineering - importing resoures was annoying, and I could have achived results much faster by just "clicking" the setup together. But I couldn't help myself.
 
-* Architecture 
+* Architecture
 :PROPERTIES:
 :CUSTOM_ID: architecture
 :END:
@@ -73,7 +73,7 @@ The bucket policy in this case should look more like this:
 
 #+begin_src json
 {
-  "Version":"2012-10-17",		 	 	 
+  "Version":"2012-10-17",
   "Statement": [
     {
       "Sid": "AllowCloudFrontServicePrincipalReadOnly",
@@ -150,12 +150,12 @@ One of the nice features of this setup is setting a budged [[[#footnotes][5]]]. 
 
 In the current setup, the budget is configured as a *montly recurring* budget with a fixed value, based on *unblended costs*. I created only one alert -  at 80% of the forecasted costs - which send me an email (no actions configured).
 
-*** S3 Logs 
+*** S3 Logs
 {{% notice warning "TODO" %}}
 Prepare this setup
 {{% /notice %}}
 
-** CloudFlare 
+** CloudFlare
 :PROPERTIES:
 :CUSTOM_ID: cloudflare
 :END:
@@ -174,11 +174,11 @@ Terragrunt promotes keeping Terraform states small, maintaining a clear separati
 
 More information can be found in [[https://terragrunt.gruntwork.io/docs][Terragrunt's documentation]].
 
-** Code structure 
+** Code structure
 
 My approach was to create an implicit stack in [[https://github.com/mandos/personal-website/tree/master/terragrunt][/terragrunt]] directory. Most of the directories there are units; the one exception is //modules/ directory, which contains small modules written by me.
 
-#+begin_src 
+#+begin_src
 terragrunt
     ├── budget
     ├── certificate
@@ -198,9 +198,9 @@ terragrunt
     └── stack.yaml
 #+end_src
 
-I consider using [[https://terragrunt.gruntwork.io/docs/features/stacks/#choosing-between-implicit-and-explicit-stacks][an explicit stack]], but to justify the overhead of that approach, I would need at least two different environments (e.g., /dev/ and /prod/). 
+I consider using [[https://terragrunt.gruntwork.io/docs/features/stacks/#choosing-between-implicit-and-explicit-stacks][an explicit stack]], but to justify the overhead of that approach, I would need at least two different environments (e.g., /dev/ and /prod/).
 
-I used a few common files in the root stack directory (/root.hcl/, /provider-aws.hcl/, /provider-cloudflare.hcl/, /stack.yaml/). The root file is responsible for backend generation, while the provider files contain code for generating each respective provider. All autogenerated files have the prefix *auto-*. In each unit's /terragrunt.hcl/ file, I always include /root.hcl/ and according the needs one or two provider files. Alternatively, everything could be places in the /root.hcl/ file, using conditional provider generation based on, for example, a local variable. 
+I used a few common files in the root stack directory (/root.hcl/, /provider-aws.hcl/, /provider-cloudflare.hcl/, /stack.yaml/). The root file is responsible for backend generation, while the provider files contain code for generating each respective provider. All autogenerated files have the prefix *auto-*. In each unit's /terragrunt.hcl/ file, I always include /root.hcl/ and according the needs one or two provider files. Alternatively, everything could be places in the /root.hcl/ file, using conditional provider generation based on, for example, a local variable.
 
 I didn't write all the modules used in the stack myself - most of them come from the long-established [[https://github.com/terraform-aws-modules][Terraform AWS modules]] GitHub organization. As mentioned before, whenever I need custom code, I put it in the /modules/ directory. I did consider writing everything from the scratch, especially since modules tailored to my needs would be simpler and more straightforward than the generic ones designed to cover a wide range of cases - but in the end, time constains won.
 {{% notice note "Units Circular Dependencies" %}}
@@ -231,14 +231,14 @@ Once I was satisfied with the results, I moved on to the next unit (step 1) and 
 Usually, importing resources is not a big problem - the parameters required by import are descibed in provider's documentation, and values like ID or name can be found in AWS Console or a similar tool. One problem I encountred was importing Cloudflare DNS records, which required ID that I couldn't find in the Cloudflare Dashboard. The only way I found to do it was using API to retrieve this information (https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/list/)
 {{% /notice %}}
 
-* Summary 
+* Summary
 
 At the end, I achieved what I wanted — a simple and cost-effective setup for static website hosting, fully managed through infrastructure-as-code. Both parts of the solution can still be improved. For example, I currently don’t have access logs, only some CloudFront telemetry and reports (which, by the way, are quite good).
 
 The code itself could also be made more generic to form a complete static hosting solution as a dedicated Terragrunt stack.
 Overall, though, I’m quite happy with how the setup turned out.
 
-* Comments 
+* Comments
 
 {{< comments/email >}}
 
@@ -247,7 +247,7 @@ Overall, though, I’m quite happy with how the setup turned out.
 :CUSTOM_ID: footnotes
 :END:
 1. [[https://www.glukhov.org/post/2024/06/deploy-hugo-site-to-aws/#7-update-your-configtoml][Deploy Hugo site to AWS S3 - Rost Glukhov | Personal site and technical blog]]
-2. [[https://docs.aws.amazon.com/AmazonS3/latest/userguide/website-hosting-custom-domain-walkthrough.html][Tutorial: Configuring a static website using a custom domain registered with ...]] 
+2. [[https://docs.aws.amazon.com/AmazonS3/latest/userguide/website-hosting-custom-domain-walkthrough.html][Tutorial: Configuring a static website using a custom domain registered with ...]]
 3. [[https://repost.aws/knowledge-center/cloudfront-serve-static-website][Use CloudFront to serve a static website hosted on Amazon S3 | AWS re:Post]]
 4. [[https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html][Restrict access to an Amazon S3 origin - Amazon CloudFront]]
 5. [[https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html][Managing your costs with AWS Budgets - AWS Cost Management]]

@@ -1,11 +1,16 @@
 #+title: Gitlab Projects Migration
-#+lastmod: [2025-12-16 14:57]
+#+tags[]: company-projects
+#+toc: t
+#+description: The project involved migrating selected repositories from one GitLab instance to another, improving CI/CD pipelines, cleaning up Terraform code, and ensuring a smooth transition for the involved development teams. The work included handling two different types of GitLab projects - Infrastructure  and Frontend - which required different migration and implementation approaches.
+#+summary: The project involved migrating selected repositories from one GitLab instance to another, improving CI/CD pipelines, cleaning up Terraform code, and ensuring a smooth transition for the involved development teams. The work included handling two different types of GitLab projects - Infrastructure  and Frontend - which required different migration and implementation approaches.
+#+export_file_name: gitlab-projects-migration
+#+lastmod: [2025-12-17 12:39]
 
 * My role
 DevOps Engineer (planning and implementation)
 
-* Project description.
-The project involved migrating selected repositories from one GitLab instance to another, improving CI/CD pipelines, cleaning up Terraform code, and ensuring a smooth transition for the involved development teams. The work included handling two different types of GitLab projects—Infrastructure and Frontend—which required different migration and implementation approaches.
+* Project description
+The project involved migrating selected repositories from one GitLab instance to another, improving CI/CD pipelines, cleaning up Terraform code, and ensuring a smooth transition for the involved development teams. The work included handling two different types of GitLab projects - Infrastructure  and Frontend - which required different migration and implementation approaches.
 
 * Initial project state
 The project was part of a larger body of work that had been partially completed earlier. Some GitLab projects, such as Terraform modules, were duplicated across both GitLab instances and were already following separate development paths, which increased the complexity of the Infrastructure projects. The code had to be updated to use Terraform modules from the “new” instance while simultaneously maintaining backward compatibility.
@@ -22,7 +27,7 @@ Scope of work:
 - Updated third-party dependencies, including Terraform modules.
 - Modified in-house Terraform modules to maintain backward compatibility for migrated projects.
 - Created GitLab components to support Terraform deployments aligned with the current version of the Infrastructure as Code stack.
-  
+
 * Frontend projects migration
 The migrated solution was prepared in collaboration with the Frontend team, making clear and consistent communication critical to capturing all requirements and delivering a solution that could be independently maintained by the team after handover.
 
@@ -31,7 +36,7 @@ Scope of work:
 - Standardized CI/CD pipelines using GitLab components to build, test, and deploy frontend applications.
 - Conducted a workshop to present the solution to the Frontend team and transfer ownership.
 - Provided oversight during the migration switch and ongoing support in the period following the migration.
-  
+
 * Outcome
 - The migration enabled the shutdown of an older, poorly maintained GitLab instance that relied on outdated solutions.
 - The new frontend CI/CD pipelines improved security, increased consistency across applications, and simplified future changes through the use of GitLab components, allowing updates to be propagated easily across all Frontend team solutions.

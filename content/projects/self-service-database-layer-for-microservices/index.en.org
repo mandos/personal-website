@@ -1,4 +1,9 @@
 #+title: Self-Service Database Layer for Microservices
+#+toc: t
+#+tags[]: company-projects
+#+export_file_name: self-service-database-layer-for-microservices
+#+description: The goal of the project was to prepare a process that enabled development teams to create PostgreSQL-based database infrastructure for their microservices. The process was designed to integrate seamlessly into the existing development workflow while keeping infrastructure and application concerns clearly separated and minimizing the impact of configuration mistakes made by developers. The application was deployed on EKS (AWS-managed Kubernetes), and all infrastructure was provisioned in the AWS cloud.
+#+summary: The goal of the project was to prepare a process that enabled development teams to create PostgreSQL-based database infrastructure for their microservices. The process was designed to integrate seamlessly into the existing development workflow while keeping infrastructure and application concerns clearly separated and minimizing the impact of configuration mistakes made by developers. The application was deployed on EKS (AWS-managed Kubernetes), and all infrastructure was provisioned in the AWS cloud.
 #+lastmod: [2025-12-16 12:58]
 
 * Role
@@ -37,5 +42,3 @@ To improve visibility of changes, I implemented integration with Microsoft Teams
 As a result, development teams gained a self-service tool to provision parts of the infrastructure required by their microservices without direct involvement from DevOps teams, which made the development process faster and smoother.
 
 For DevOps teams, several operational responsibilities were shifted away from day-to-day provisioning, allowing them to focus on maintaining the codebase and handling non-standard or exceptional situations, while still retaining full visibility and control over infrastructure and changes.
-  
-  

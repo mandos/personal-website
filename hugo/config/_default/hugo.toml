@@ -19,9 +19,7 @@ copyright = "Marek Maksimczyk" # Footer copyright holder, otherwise will use sit
 [[cascade]]
   [cascade.params]
     categories = ['tech']
+    toc = true
   [cascade.target]
     kind = 'page'
     path = '/blog/tech/**'
-
-
-
