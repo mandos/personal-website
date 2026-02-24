@@ -1,0 +1,114 @@
+#+title: Week 08 in Wonderland 2026
+#+date: <2026-02-22 nie>
+#+tags[]: weekly pulumi nx aws emacs ai
+#+description: First impressions of Pulumi with TypeScript, deploying to S3 with NX run-commands, caching infrastructure builds, Emacs terminal setup, and first steps with Claude-Code.
+#+summary: First impressions of Pulumi with TypeScript, deploying to S3 with NX run-commands, caching infrastructure builds, Emacs terminal setup, and first steps with Claude-Code.
+#+lastmod: [2026-02-24 14:56]
+
+/*Disclaimer:*/
+#+begin_quote
+"I would never die for my beliefs because I might be wrong"
+
+Bertrand Russell (or not)
+#+end_quote
+
+* Pulumi: first look
+I had to create some simple infrastructure for my project with synchronization between GTFS and OpenStreetMap, so I decided to check Pulumi as main driver for IaC. Infrastructure is mostly AWS (S3, CloudFront, Certificate, IAM) and some DNS records in CloudFlare, quite simple but with some moving parts. As driving language I chose TypeScript, because rest of project is using it, and as main comparison I'm using Terraform/OpenTofu/Terragrunt. I just scanned documentation, mostly for guides and some basic concepts, also maybe dug a little bit deeper in some topics I had problems with.
+
+So this is just very surface experience for now. My feelings are mixed, in theory using general purpose language for infrastructure code opens a lot of possibilities but it also makes stuff more complex.
++ Using a good IDE is a must have, I remember having documentation of Terraform on one screen and code on second was my workflow long time ago. I started to do it with Pulumi but, fuck I'm not so patient anymore, or maybe wiser, who knows? Using general purpose language gives a lot of tools to work with, but if you are not a full fledged developer, or start using a language outside your suite, it can be painful to set it up. Doom Emacs I'm using, has a good support for TypeScript (God thank you for ~<Ctrl-Space>~) but still, I felt like at least I would like to have easy jump from IDE to website documentation. Maybe I'll explore some tools to do it.
++ Code tends to be more complex than HCL DSL, of course it's also what I'm familiar with, and I just recently started writing more TypeScript code, but still some syntax I need to use for simple stuff, for example ~pulumi.interpolate~ instead of simply using outputs is uncomfortable. Code structure can also be more messy, and harder to follow. It gives more power but I also miss a little bit the simplicity of "all in THIS directory code" from Terraform.
++ I encountered some strange behaviours, changed code ran properly but resources were not created (I changed names for inline IAM policies). Only looking at real infrastructure and recreating specific resources fixed the case but I'm curious what would happen with a more complex setup? Do I need additional verification tools for infrastructure?
++ I haven't done many maintenance tasks like importing or moving resources, so I don't know how convenient they are with Pulumi, only what I did was to move backend from local to S3, and I had some issues with it, good that I still had the local version, because I ended up with empty remote state. Pretty sure skill issue on my part, but who knows?
++ Using stacks reminds me of Terraform's workspaces which I'm not a big fan of. I like to see my code more clearly than in one file, but again, it is a problem with me and not with the tool.
+
+To summarize, I'm still not sure what to think about it. Is it a tool for developers who don't like to learn HCL and Terraform or for some cross-functional teams where both infra and developers work on infrastructure? Or maybe there are some use cases for DevOps/Platform Engineering teams with a good developer background? I'm going to go back to Pulumi and explore more, maybe not right now.
+
+* NX: deploying to AWS S3
+It's funny how having a lot of choice and some experience, we tend to look for a complex solution. I wanted to deploy an app to S3 in NX monorepo, what did I start to investigate? How to write a task for NX using [[https://www.npmjs.com/package/@aws-sdk/client-s3][@aws-sdk/client-s3 - npm]] to synchronize files with S3 and [[https://www.npmjs.com/package/@aws-sdk/client-cloudfront][@aws-sdk/client-cloudfront - npm]] to invalidate cache. There is an easier solution which works just fine and is much easier to implement. Using [[https://nx.dev/docs/reference/nx/executors#run-commands][nx:run-command Executor]] to wrap =aws cli= solves most of the problems and saves a lot of time.
+
+#+caption: in app/ippo-web/project.json
+#+begin_src json
+{
+  "targets": {
+    "deploy": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        "build",
+        "@mandos-dev/ippo-infra:deploy"
+      ],
+      "cache": true,
+      "options": {
+        "commands": [
+          "aws s3 sync {projectRoot}/dist s3://$S3_BUCKET_NAME --delete",
+          "aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths '*'"
+        ],
+        "parallel": false
+      }
+    }
+  }
+}
+#+end_src
+
+I still need to resolve the problem of how to cache the =ippo-infra:deploy= target and get output from it, but at least most of the functionality is done with 20 lines of code, and as a bonus I utilized NX cache mechanism which prevents unnecessary deployments.
+
+* NX: caching Pulumi infrastructure builds
+So using NX gives me two (maybe more, who knows?) nice features, one is creating [[https://nx.dev/docs/concepts/task-pipeline-configuration][Task Pipelines]] which can be cross-projects (deploy infrastructure->deploy application) and second is to cache builds to speed up the process by removing unnecessary tasks. Pulumi runs my stack (~pulumi up --yes~) in around 30s, it's not too long but I thought that I can cache it to speed up deployment of application, maybe even run ~nx affected --target deploy --base master~ to deploy all affected projects. Unfortunately naive caching of pulumi deploy tasks doesn't work, it is based on input files which are mostly source files. So if I use the same version of code, output will be the same for this code, which doesn't have to be true. For example:
+
+1. Run ~pulumi up~, command is run and cached
+2. Changing output, run ~pulumi up~, command is run and cached
+3. Changing output to version from point 1, run ~pulumi up~, command is not run because it's using cached version. This leads to showing correct output, but remote state wasn't updated at all.
+
+One solution is to cache only the last run, and if code *IS NOT* changed then we can run a "fast" build. This solution doesn't work with a team, where code can be changed by someone else, but someone can argue that code shouldn't be deployed locally at all.
+
+Second solution would be to create an additional input to source code, which would be current output from the stack. This will create a pair of inputs (source code, outputs) which theoretically should force to run code only when something changes. But in this case some changes in code could be not visible in outputs, so it can lead to the same situation as in the example.
+
+For now I don't have a good solution, implementation of the second proposal could look like this.
+
+#+caption: in app/ippo-infra/project.json
+#+begin_src json
+{
+  "targets": {
+    "pre-deploy": {
+      "executor": "nx:run-commands",
+      "outputs": [
+        "{projectRoot}/history/last-run.json"
+      ],
+      "options": {
+        "commands": [
+          "mkdir -p apps/ippo-infra/outputs && cd apps/ippo-infra && pulumi stack output --json > outputs/outputs.json"
+        ]
+      }
+    },
+    "deploy": {
+      "dependsOn": [
+        "pre-deploy"
+      ],
+      "executor": "nx:run-commands",
+      "inputs": [
+        {
+          "dependentTasksOutputFiles": "{projectRoot}/history/last-run.json"
+        },
+        "{projectRoot}/**/*"
+      ],
+      "cache": true,
+      "options": {
+        "commands": [
+          "cd apps/ippo-infra && pulumi up --yes --suppress-progress"
+        ]
+      },
+      "parallelism": false
+    }
+  }
+}
+#+end_src
+
+* Emacs and working with terminal
+My setup is based on workspaces of a window Manager (xmonad), and previously on terminal (Alacritty) with Tmux and Neovim, now I use Doom Emacs for most of my tasks. I'm still a heavy user of terminal, but this time I'm using *vterm* terminal inside Emacs, both as popup and inside the buffer windows (if I want bigger or many instances). Recently I'm again considering using a standalone terminal alongside an Emacs window. Using home-row =<Super-h>= is fast to switch to another window with a dedicated terminal and I don't have to shuffle Emacs buffers. Also I still have some habits from using Neovim in a similar way so my muscle memory can kick back again, and using Tmux is a cherry on top. Too many choices...
+
+* Claude-Code wants my soul
+I mostly slept over AI hype, at least some of it, I was using Copilot at the beginning, and I'm still using Open Chat GPT for poor people (free) but recently, at the urging of one of my imaginary virtual friends I bought PRO subscription of Claude-Code and I need to admit, that it is a lot of fun. I don't know why, but there is something enjoyable about seeing how it solves some tasks. I'm just curious, if half of money invested in LLM and AI isn't for researching how to push as much dopamine to the human brain.
+
+Also there is a question of how productive people are using these tools, and as usually looking at the "product" itself is enough to judge it. First task I did with it, was to write Emacs Doom module to integrate Claude-Code package. My second task was to extend this module to integrate another "better" Claude-Code package. This wasn't productive at all, but fuck, it felt nice.
+
+For now I'm still exploring possibilities to use it, I already see some shortcomings and dangers but also quite a lot of possible improvements in workflow. Plan I have is enough to test some stuff but also not big enough to be a lazy dumpling and delegate every silly task to it. So maybe there's still hope for me... and my soul.

@@ -1,0 +1,3 @@
+#+title: Week in Wonderland
+#+description: A weekly roundup of interesting discoveries, learnings, and musings.
+#+lastmod: [2026-02-24 14:58]
