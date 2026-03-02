@@ -1,0 +1,143 @@
+#+title: Week 09 in Wonderland 2026
+#+date: <2026-03-01 nie>
+#+tags[]: weekly react nx pulumi aws emacs xmonad ai
+#+description: Building Ippo webapp with React and Vite, deploying to S3 with Pulumi outputs in NX, rendering markdown documentation with react-markdown, managing GTFS file uploads, xmonad and Emacs workflow tweaks, and second week with Claude.
+#+summary: Building Ippo webapp with React and Vite, deploying to S3 with Pulumi outputs in NX, rendering markdown documentation with react-markdown, managing GTFS file uploads, xmonad and Emacs workflow tweaks, and second week with Claude.
+#+lastmod: [2026-03-02 11:11]
+
+/*Disclaimer:*/
+#+begin_quote
+"I would never die for my beliefs because I might be wrong"
+
+Bertrand Russell (or not)
+#+end_quote
+
+* Ippo, React and more
+I'm writing small webpage to synchronize data between General Transport Feed Specification (GTFS) and OpenStreetMap data, it's called *Ippo* and is part of the [[https://github.com/mandos/open-transit-stack][open-transit-stack]] monorepo. It's React app with Vite as the build tool.
+** Deployment and Pulumi output
+I added a target to deploy the app to S3 and invalidate the CloudFront cache. The only small issue was that I needed to use outputs from the Pulumi infrastructure build. I decided to save Pulumi outputs to a specific directory:
+#+begin_src json
+{
+  "targets": {
+    "deploy": {
+      "dependsOn": [
+        "pre-deploy"
+      ],
+      "executor": "nx:run-commands",
+      "inputs": [
+        {
+          "dependentTasksOutputFiles": "{projectRoot}/outputs/prod.json"
+        },
+        "{projectRoot}/**/*"
+      ],
+      "cache": true,
+      "outputs": [
+        "{projectRoot}/outputs/prod.json"
+      ],
+      "options": {
+        "commands": [
+          "cd apps/ippo-infra && pulumi up --yes --suppress-progress",
+          "cd apps/ippo-infra && pulumi stack output --json > outputs/prod.json"
+        ]
+      },
+      "parallelism": false
+    }
+  }
+}
+#+end_src
+Then I process it with =deploy= target in the ippo-web project.
+#+begin_src json
+{
+  "name": "@mandos-dev/ippo-web",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "targets": {
+    "prepare-envs": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        "@mandos-dev/ippo-infra:deploy"
+      ],
+      "outputs": [
+        "{projectRoot}/envs"
+      ],
+      "options": {
+        "command": "{projectRoot}/scripts/prepare-envs.sh"
+      }
+    },
+    "deploy": {
+
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        "build",
+        "@mandos-dev/ippo-infra:deploy",
+        "prepare-envs"
+      ],
+      "cache": true,
+      "options": {
+        "envFile": "{projectRoot}/envs/prod-infra.env",
+        "commands": [
+          "cat {projectRoot}/envs/prod-infra.env",
+          "aws s3 sync {projectRoot}/dist s3://$S3_BUCKET_NAME --delete",
+          "aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths '/*'"
+        ],
+        "parallel": false
+      }
+    }
+  }
+}
+#+end_src
+I decided to use a pre-deploy target to prepare environment variables, but now looking at it, I think a better solution would be a custom deployment script that does all this in one place. It would simplify task pipeline by removing one step, and I'd still have only one additional script - just =deploy-to-s3.sh= instead of =prepare-envs.sh=.
+
+** Routing
+I'm using standard [[https://reactrouter.com/6.30.3][React Router v6]] and it looks neat. I still haven't read a lot of documentation about it, but the basic structure Claude prepared looks quite clean. I'm eager to explore it a little bit more next week, especially since I already have some more complex use cases with documentation pages.
+
+** Documentation
+Claude found a neat way to add documentation to webpage. My thought was to have consistent documentation in the project directory and on the website. The effect is easy to achieve by using [[https://github.com/remarkjs/react-markdown][remarkjs/react-markdown]] with [[https://github.com/remarkjs/remark-gfm][remarkjs/remark-gfm]] and the ability of Vite to bundle raw markdown files with =?raw= import suffix. Cherry on the cake is using dynamic routing with =:slug= parameter.
+I'm importing all documentation files with
+#+begin_src typescript
+import gettingStarted from '../../docs/getting-started.md?raw';
+// etc...
+#+end_src
+and then create an array of documentation entries.
+#+begin_src typescript
+export interface DocEntry {
+  slug: string;
+  title: string;
+  order: number;
+  content: string;
+}
+#+end_src
+Then in the documentation content component, based on =slug= I render the correct documentation with React Markdown component and GFM plugin.
+#+begin_src typescript
+<main className={styles.content}>
+    <Markdown remarkPlugins={[remarkGfm]}>{doc.content}</Markdown>
+</main>
+#+end_src
+One con of this solution is that all files are bundled in the app, even if the user doesn't check documentation pages. Solution(?) is to use dynamic imports but for now, I don't have a lot of documentation files to bother and... I don't know how to do it (for now).
+
+** Managing file uploads
+Again, looks like the best way to check your ideas is just to implement them and life will show how they work. I prepared the =gtfs-io= library to manage I/O operations regarding feed files, but only when I started to implement the Ippo website I saw that the library was prepared for the backend (Node.js file system usage). I'm still not sure if this library has any sense, for now I have a light implementation of unpacking GTFS zip files with [[https://github.com/101arrowz/fflate][GitHub - 101arrowz/fflate]]. I made the same mistake with the parsing library (=gtfs-parse=), which I refactored to manage pure logic as the main package and /Node.js/ file system features in a subpackage. A lot of things to learn, and a lot of code to read and (I hope) to write. For now, basic upload is working as it's supposed to.
+
+* Personal workflow improvements?
+It's always a slippery slope, when you're changing something in your workflow. Is it really an improvement or more sophisticated way of procrastination? Recently, maybe because I have my own virtual, personal slave, I made some changes to my setup (xmonad, alacritty, tmux, emacs).
+
+First of all, I'm quite sure, that I want to use separate terminal outside Emacs, using =<Super-h>= (Colemak-DH keyboard layout) to change xmonad window between Emacs and Terminal is more convenient than shuffling Emacs' buffers. To do it I added some key bindings to open terminal with tmux (or =t= from session wizard plugin) in project directory and additionally, maybe I would need it, in buffer directory. Shortcuts ("=<Space> o o=", "=<Space> o O=") are just convenient but not connected with any mental model, maybe it's a mistake.
+#+begin_src elisp
+(map! :leader :desc "Tmux in project dir" :n "o o"
+      (cmd! (start-process "alacritty" nil "alacritty" "-e" "bash" "-ilc" (concat "t " (shell-quote-argument (doom-project-root))))))
+(map! :leader :desc "Tmux in buffer dir" :n "o O"
+      (cmd! (start-process "alacritty" nil "alacritty" "-e" "bash" "-ilc" (concat "t " (shell-quote-argument default-directory)))))
+#+end_src
+The only missing part is that my default xmonad layout is "/Tall/", so an opened terminal shows next to my Emacs. What I want is the "/Full/" layout where I can quickly switch between full screen Emacs and full screen Terminal with Tmux. This can be done in xmonad with the =JumpToLayout= message from the =XMonad.Layout.LayoutCombinators= module. I already have a binding to open Emacs client, I just need to send the message to change layout after it.
+#+begin_src haskell
+import XMonad.Layout.LayoutCombinators (JumpToLayout)
+
+myKeys =
+  [
+    ("M-C-n", spawn "emacsclient -c" >> sendMessage (JumpToLayout "Full"))
+  ]
+#+end_src
+
+* Claude slave or mentor?
+Second week with Claude and I'm really surprised how some stuff I would spend many hours on because of lack of skills or knowledge (or both) can be done in a few minutes. I'm not using all available "credits" yet, so it means that maybe I can give it more tasks. Making small improvements to my setup, creating features for Ippo is quick and, I need to say it, a lot of fun.
+On the other hand, I'm still afraid that I'm not learning a lot during this process. Weekly blog posts are one way to check what I remember from stuff that was done, what I still understand, and right now I see that it's not enough. I need to check the code once again, how some features were done, and I'm pretty sure that implementing it by myself would take a lot of time and additional research. Looks like I need to change strategy using AI.
+I can see a case when Claude can be that slightly depressed coworker who pushes you to do more stuff, with better focus and dedication, but also I can see a world where Claude will be that junior who gets all the work to do because senior staff want to drink another coffee and have some chit-chat with coworkers.
