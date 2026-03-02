@@ -1,0 +1,159 @@
+\documentclass[10pt,a4paper,ragged2e,withhyper]{altacv}
+
+\geometry{left=1.25cm,right=1.25cm,top=1.5cm,bottom=1.5cm,columnsep=1.2cm}
+
+\usepackage{paracol}
+\usepackage[rm]{roboto}
+\usepackage[defaultsans]{lato}
+
+% Change the font if you want to, depending on whether
+% you're using pdflatex or xelatex/lualatex
+\renewcommand{\familydefault}{\sfdefault}
+
+% Colors
+\definecolor{SlateGrey}{HTML}{2E2E2E}
+\definecolor{LightGrey}{HTML}{666666}
+\definecolor{DarkPastelRed}{HTML}{450808}
+\definecolor{PastelRed}{HTML}{8F0D0D}
+\definecolor{GoldenEarth}{HTML}{E7D192}
+\colorlet{name}{black}
+\colorlet{tagline}{PastelRed}
+\colorlet{heading}{DarkPastelRed}
+\colorlet{headingrule}{GoldenEarth}
+\colorlet{subheading}{PastelRed}
+\colorlet{accent}{PastelRed}
+\colorlet{emphasis}{SlateGrey}
+\colorlet{body}{LightGrey}
+
+% Fonts
+\renewcommand{\namefont}{\Huge\rmfamily\bfseries}
+\renewcommand{\personalinfofont}{\footnotesize}
+\renewcommand{\cvsectionfont}{\LARGE\rmfamily\bfseries}
+\renewcommand{\cvsubsectionfont}{\large\bfseries}
+\renewcommand{\itemmarker}{{\small\textbullet}}
+\renewcommand{\ratingmarker}{\faCircle}
+
+\begin{document}
+
+\name{Marek Maksimczyk}
+\tagline{DevOps Engineer}
+\personalinfo{%
+  \email{marek.maksimczyk@mandos.net.pl}
+  \homepage{mandos.net.pl}
+  \github{mandos}
+  \printinfo{\faLinkedin}{marek-maksimczyk}[https://linkedin.com/in/marek-maksimczyk-532a4358]
+}
+
+\makecvheader
+
+\columnratio{0.6}
+\begin{paracol}{2}
+
+%% ====== LEFT COLUMN ======
+
+\cvsection{Experience}
+
+\cvevent{Independent Developer}{Open Source}{November 2025 -- Present}{}
+\begin{itemize}
+\item Designed and developed Open Transit Stack, an open-source monorepo for processing, validating, and visualizing public transit data (GTFS) using TypeScript, React, and MapLibre GL.
+\item Built AWS infrastructure (S3, CloudFront, ACM, DNS) using Pulumi as Infrastructure as Code.
+\item Structured the project as an Nx monorepo with strict TypeScript, Vitest, Playwright E2E tests, and ESLint/Prettier.
+\end{itemize}
+
+\divider
+
+\cvevent{Senior DevOps Engineer}{Foundever}{April 2024 -- October 2024}{}
+\begin{itemize}
+\item Designed a self-service database provisioning process for microservices, enabling development teams to create PostgreSQL infrastructure without DevOps involvement.
+\item Led the migration of GitLab projects to a new instance, enabling the shutdown of a legacy GitLab server and standardizing CI/CD pipelines across teams.
+\item Managed AWS infrastructure using Terraform and improved delivery processes, including GitLab pipelines and ArgoCD/Helm configurations.
+\end{itemize}
+
+\divider
+
+\cvevent{Senior DevOps Engineer}{Cobiro}{June 2021 -- March 2024}{Copenhagen, Denmark}
+\begin{itemize}
+\item Led a small DevOps team, overseeing cloud infrastructure and deployments.
+\item Achieved 50\% reduction in infrastructure and operational costs through Kubernetes optimization, RDS right-sizing, and migration from Datadog to Elastic Cloud.
+\item Migrated AWS infrastructure to Infrastructure as Code (IaC) using Terraform, Terragrunt, and Atlantis.
+\item Administered Kubernetes clusters (EKS) with Helm, implementing cluster autoscaler and KEDA for event-driven scaling.
+\item Built CI/CD pipelines (CircleCI) and Docker images for frontend and backend teams.
+\end{itemize}
+
+\divider
+
+\cvevent{Senior DevOps Engineer}{SeaChange Poland}{January 2019 -- June 2021}{Warsaw, Poland}
+\begin{itemize}
+\item Led a small DevOps team, overseeing infrastructure and automation processes.
+\item Designed and implemented AWS-based infrastructure using Terraform for the company's products, including ECS, EKS, EC2, S3, CloudFront, KMS, IAM, ElastiCache (Redis), and Elasticsearch.
+\item Developed and configured monitoring (Prometheus, Grafana) and logging (ELK, S3) stacks.
+\item Created an on-demand environment provisioning system using Terraform and Jenkins.
+\item Managed AWS accounts and configured network infrastructure, including IAM and VPC, using Terraform.
+\end{itemize}
+
+\divider
+
+\cvevent{System Administrator}{Xstream A/S}{January 2015 -- December 2018}{Copenhagen, Denmark}
+\begin{itemize}
+\item Designed and maintained AWS infrastructure using an in-house system (Python with Boto and Fabric, Puppet, Packer) and later transitioned to CloudFormation.
+\item Managed over 300 on-premise servers (both hardware and virtual machines) using Fabric and Puppet.
+\item Managed and configured internal services, including monitoring (Nagios, Zabbix, Observium), code repositories (SVN, Git, Gerrit), logging stack (ELK), and CI/CD pipelines (Jenkins).
+\end{itemize}
+
+\divider
+
+\cvevent{Senior PHP Developer}{Xstream A/S}{January 2012 -- December 2014}{Copenhagen, Denmark}
+\begin{itemize}
+\item Developed and maintained video content management and processing systems using PHP 5 (Zend Framework, Symfony 2) and MySQL.
+\end{itemize}
+
+\divider
+
+\cvevent{Earlier Roles: PHP Developer, System Administrator}{Various}{2005 -- 2011}{}
+\begin{itemize}
+\item Built multiple web applications and custom frameworks using PHP 5, MySQL, and various frameworks (Kohana, Yii, Zend).
+\item Implemented data mining and search solutions using Lucene and Solr.
+\item Provided IT support, including network management and Windows Server administration.
+\end{itemize}
+
+%% ====== RIGHT COLUMN ======
+
+\switchcolumn
+
+\cvsection{Profile}
+Senior DevOps Engineer with 10+ years in cloud infrastructure and a software development background. Experienced in leading small DevOps teams, migrating infrastructure to IaC, and optimizing AWS costs. Strong focus on Terraform, Kubernetes, and CI/CD automation.
+
+\cvsection{Technical Skills}
+
+\cvtag{AWS}
+\cvtag{GCP}\\
+\cvtag{Terraform}
+\cvtag{Terragrunt}
+\cvtag{Pulumi}\\
+\cvtag{Docker}
+\cvtag{Kubernetes}
+\cvtag{Helm}\\
+\cvtag{GitLab CI}
+\cvtag{CircleCI}
+\cvtag{ArgoCD}\\
+\cvtag{Datadog}
+\cvtag{Prometheus}
+\cvtag{Grafana}
+\cvtag{ELK Stack}\\
+\cvtag{Python}
+\cvtag{Bash}
+\cvtag{TypeScript}
+
+\cvsection{Languages}
+\begin{itemize}
+\item Polish -- Native
+\item English -- C1 (Professional working proficiency)
+\item Japanese -- A1 (Beginner)
+\end{itemize}
+
+\cvsection{Education}
+\cvevent{Technical University in Lodz}{The Faculty of Technical Physics, Information Technology and Applied Mathematics}{2001 -- 2006}{Lodz, Poland}
+
+\end{paracol}
+
+\end{document}

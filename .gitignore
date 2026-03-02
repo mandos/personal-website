@@ -10,9 +10,11 @@ auto-*.tf
 infra/.envrc
 state*
 
-# Artifact of exporting to PDF
-*.tex
 *.bbl
+*.aux
+*.out
+*.log
+*.xmpi
 
-# For now also pdf
-*.pdf
+/content/projects/**/*.tex
+/content/projects/**/*.pdf

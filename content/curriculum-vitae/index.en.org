@@ -5,71 +5,53 @@
 #+export_file_name: marek-maksimczyk-cv-en
 #+lastmod: [2025-10-24 15:48]
 
+[[file:marek-maksimczyk-cv-en.pdf][Download PDF]]
+
 * Profile
-Experienced DevOps Engineer with a Strong Development Background
-Passionate about learning new technologies, designing innovative systems, and optimizing existing infrastructure. Skilled in cloud platforms, automation, and CI/CD pipelines, with a strong foundation in software development. Always eager to tackle complex challenges and drive efficiency through well-architected solutions.
+Senior DevOps Engineer with 10+ years in cloud infrastructure and a software development background. Experienced in leading small DevOps teams, migrating infrastructure to IaC, and optimizing AWS costs. Strong focus on Terraform, Kubernetes, and CI/CD automation.
 * Languages
-+ Polish - Native speaker
-+ English - B2/C1 (Advanced)
++ Polish - Native
++ English - C1 (Professional working proficiency)
 + Japanese - A1 (Beginner)
 * Education
 Technical University in Lodz
 2001 – 2006
-The Faculty of Techical Physics, Information Technology and Applied Mathematics.
+The Faculty of Technical Physics, Information Technology and Applied Mathematics.
 * Technical Skills
-+ Cloud & Infrastructure: AWS (ECS, EKS, EC2, S3, CloudFront), GCP
-+ IaC & Automation: Terraform, Terragrunt, CloudFormation, Puppet
-+ CI/CD & DevOps Tools: GitLab, CircleCI, Jenkins
-+ Containerization & Orchestration: Docker, Kubernetes, Helm
-+ Monitoring & Logging: Datadog, AWS CloudWatch, Prometheus, Grafana, ELK Stack
-+ Scripting & Development: Python, Bash, PHP
-+ Version Control & Collaboration: Git, GitHub, GitLab, Jira
-* Soft Skills
-+ Problem-Solving
-+ Adaptability
-+ Active Listening
-+ Research & Continuous Learning
-+ Self-Sufficiency & Troubleshooting ("RTFM" Approach)
++ Cloud: AWS, GCP
++ IaC: Terraform, Terragrunt, Pulumi
++ Containers: Docker, Kubernetes, Helm
++ CI/CD: GitLab CI, CircleCI, ArgoCD
++ Monitoring: Datadog, Prometheus, Grafana, ELK Stack
++ Scripting: Python, Bash, TypeScript
 * Experience
-** 2024, November  - Present | Devops and Developer Freelancer
-** 2024, Aprill  – 2024, October | Senior DevOps Engineer at Foundever
-+ Managed AWS infrastructure using Terraform.
-+ Supported development teams in optimizing workflows and infrastructure.
-+ Designed and improved delivery processes, including AWS infrastructure management, GitLab pipelines, and ArgoCD/Helm configurations.
-+ Developed a process for delivering the database layer (PostgreSQL) in a microservices-oriented application.
-+ Led the migration of GitLab projects, including code and CI/CD pipelines.
+** 2025, November  - Present | Independent Developer / Open Source
++ Designed and developed Open Transit Stack, an open-source monorepo for processing, validating, and visualizing public transit data (GTFS) using TypeScript, React, and MapLibre GL.
++ Built AWS infrastructure (S3, CloudFront, ACM, DNS) using Pulumi as Infrastructure as Code.
++ Structured the project as an Nx monorepo with strict TypeScript, Vitest, Playwright E2E tests, and ESLint/Prettier.
+** 2024, April  – 2024, October | Senior DevOps Engineer at Foundever
++ Designed a self-service database provisioning process for microservices, enabling development teams to create PostgreSQL infrastructure without DevOps involvement.
++ Led the migration of GitLab projects to a new instance, enabling the shutdown of a legacy GitLab server and standardizing CI/CD pipelines across teams.
++ Managed AWS infrastructure using Terraform and improved delivery processes, including GitLab pipelines and ArgoCD/Helm configurations.
 ** 2021, June  – 2024, March  | Senior DevOps Engineer at Cobiro
 + Led a small DevOps team, overseeing cloud infrastructure and deployments.
++ Achieved 50% reduction in infrastructure and operational costs through Kubernetes optimization, RDS right-sizing, and migration from Datadog to Elastic Cloud.
 + Migrated AWS infrastructure to Infrastructure as Code (IaC) using Terraform, Terragrunt, and Atlantis.
-+ Managed cloud infrastructure, primarily in AWS, with some components in GCP.
-+ Administered Kubernetes clusters (EKS), developed deployment pipelines, and maintained Kubernetes configurations using Helm and Helm charts.
-+ Supported frontend and backend teams by creating CI/CD pipelines (CircleCI) and building Docker images.
-+ Monitored systems using Datadog and AWS CloudWatch, managing log pipelines and storage in Elastic Cloud.
++ Administered Kubernetes clusters (EKS) with Helm, implementing cluster autoscaler and KEDA for event-driven scaling.
++ Built CI/CD pipelines (CircleCI) and Docker images for frontend and backend teams.
 ** 2019, January  – 2021, June | Senior DevOps Engineer at SeaChange Poland
-+ Designed and implemented AWS-based infrastructure using Terraform for the company's products, including ECS, EKS, EC2, S3, CloudFront, KMS, IAM, ElastiCache (Redis), and Elasticsearch. Configured EKS using Terraform and Helm.
-+ Developed and configured monitoring (Prometheus, Grafana) and logging (ELK, S3) stacks.
-+ Created an on-demand environment provisioning system for the company’s products using Terraform and Jenkins.
-+ Managed AWS accounts and configured network infrastructure, including IAM and VPC, using Terraform.
-+ Provided support for development teams, maintaining and optimizing development environments.
 + Led a small DevOps team, overseeing infrastructure and automation processes.
-+ Served as a second-line support resource for resolving technical issues.
-** 2015, January  – 2018, December | System Administrator at Xstream AS
++ Designed and implemented AWS-based infrastructure using Terraform for the company's products, including ECS, EKS, EC2, S3, CloudFront, KMS, IAM, ElastiCache (Redis), and Elasticsearch.
++ Developed and configured monitoring (Prometheus, Grafana) and logging (ELK, S3) stacks.
++ Created an on-demand environment provisioning system for the company's products using Terraform and Jenkins.
++ Managed AWS accounts and configured network infrastructure, including IAM and VPC, using Terraform.
+** 2015, January  – 2018, December | System Administrator at Xstream A/S
 + Designed and maintained AWS infrastructure using an in-house system (Python with Boto and Fabric, Puppet, Packer) and later transitioned to CloudFormation.
 + Managed over 300 on-premise servers (both hardware and virtual machines) using Fabric and Puppet.
-+ Implemented development processes and tools within the IT operations team.
 + Managed and configured internal services, including monitoring (Nagios, Zabbix, Observium), code repositories (SVN, Git, Gerrit), logging stack (ELK), and CI/CD pipelines (Jenkins).
-+ Provided first and second-line support for infrastructure and development teams.
-** 2012, January –  2014, December | Senior PHP Developer at Xtream AS
-+ Developed and maintained a video content management system using PHP 5, Zend Framework, and MySQL.
-+ Designed and maintained a video processing and ingestion system using PHP 5, Symfony 2, and MySQL.
-** 2009 – 2011 | PHP Full-Stack Web Developer Freelancer
-+ Developed web pages using HTML, CSS, and JavaScript.
-+ Built a warehousing software system using PHP 5, Kohana Framework, and MySQL.
-+ Designed and implemented a babysitting service website using PHP 5, Yii Framework, and MySQL.
-+ Created a bookmaker comparison website using PHP 5, Kohana Framework, and MySQL.
-** 2007 – 2008 | PHP Developer at okazje.info
-+ Developed a custom framework for a comparison shopping website using PHP 5, MySQL, HTML, and CSS.
-+ Implemented data mining solutions using Lucene and Solr.
-** 2005 – 2006 | System Administrator at DELTRA Kozłowski i Graczykowski Sp.j.
-+ Provided general IT support, including network management, Windows Server administration, and workstation maintenance.
-+ Designed and maintained the company's website.
+** 2012, January –  2014, December | Senior PHP Developer at Xstream A/S
++ Developed and maintained video content management and processing systems using PHP 5 (Zend Framework, Symfony 2) and MySQL.
+** 2005 – 2011 | Earlier Roles: PHP Developer, System Administrator
++ Built multiple web applications and custom frameworks using PHP 5, MySQL, and various frameworks (Kohana, Yii, Zend).
++ Implemented data mining and search solutions using Lucene and Solr.
++ Provided IT support, including network management and Windows Server administration.
