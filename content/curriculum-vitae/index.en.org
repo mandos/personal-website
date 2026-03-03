@@ -9,6 +9,8 @@
 
 * Profile
 Senior DevOps Engineer with 10+ years in cloud infrastructure and a software development background. Experienced in leading small DevOps teams, migrating infrastructure to IaC, and optimizing AWS costs. Strong focus on Terraform, Kubernetes, and CI/CD automation.
+
+Location: Sapporo, Japan
 * Languages
 + Polish - Native
 + English - C1 (Professional working proficiency)
@@ -25,33 +27,33 @@ The Faculty of Technical Physics, Information Technology and Applied Mathematics
 + Monitoring: Datadog, Prometheus, Grafana, ELK Stack
 + Scripting: Python, Bash, TypeScript
 * Experience
-** 2025, November  - Present | Independent Developer / Open Source
+** 2025, November  - Present | Independent Developer / Open Source | Sapporo, Japan
 + Designed and developed Open Transit Stack, an open-source monorepo for processing, validating, and visualizing public transit data (GTFS) using TypeScript, React, and MapLibre GL.
 + Built AWS infrastructure (S3, CloudFront, ACM, DNS) using Pulumi as Infrastructure as Code.
 + Structured the project as an Nx monorepo with strict TypeScript, Vitest, Playwright E2E tests, and ESLint/Prettier.
-** 2024, April  – 2024, October | Senior DevOps Engineer at Foundever
+** 2024, April  – 2024, October | Senior DevOps Engineer at Foundever | Lodz, Poland (Remote)
 + Designed a self-service database provisioning process for microservices, enabling development teams to create PostgreSQL infrastructure without DevOps involvement.
 + Led the migration of GitLab projects to a new instance, enabling the shutdown of a legacy GitLab server and standardizing CI/CD pipelines across teams.
 + Managed AWS infrastructure using Terraform and improved delivery processes, including GitLab pipelines and ArgoCD/Helm configurations.
-** 2021, June  – 2024, March  | Senior DevOps Engineer at Cobiro
+** 2021, June  – 2024, March  | Senior DevOps Engineer at Cobiro | Warsaw, Poland (Hybrid)
 + Led a small DevOps team, overseeing cloud infrastructure and deployments.
 + Achieved 50% reduction in infrastructure and operational costs through Kubernetes optimization, RDS right-sizing, and migration from Datadog to Elastic Cloud.
 + Migrated AWS infrastructure to Infrastructure as Code (IaC) using Terraform, Terragrunt, and Atlantis.
 + Administered Kubernetes clusters (EKS) with Helm, implementing cluster autoscaler and KEDA for event-driven scaling.
 + Built CI/CD pipelines (CircleCI) and Docker images for frontend and backend teams.
-** 2019, January  – 2021, June | Senior DevOps Engineer at SeaChange Poland
+** 2019, January  – 2021, June | Senior DevOps Engineer at SeaChange Poland | Warsaw, Poland (Hybrid)
 + Led a small DevOps team, overseeing infrastructure and automation processes.
 + Designed and implemented AWS-based infrastructure using Terraform for the company's products, including ECS, EKS, EC2, S3, CloudFront, KMS, IAM, ElastiCache (Redis), and Elasticsearch.
 + Developed and configured monitoring (Prometheus, Grafana) and logging (ELK, S3) stacks.
 + Created an on-demand environment provisioning system for the company's products using Terraform and Jenkins.
 + Managed AWS accounts and configured network infrastructure, including IAM and VPC, using Terraform.
-** 2015, January  – 2018, December | System Administrator at Xstream A/S
+** 2015, January  – 2018, December | System Administrator at Xstream A/S | Warsaw, Poland (Hybrid)
 + Designed and maintained AWS infrastructure using an in-house system (Python with Boto and Fabric, Puppet, Packer) and later transitioned to CloudFormation.
 + Managed over 300 on-premise servers (both hardware and virtual machines) using Fabric and Puppet.
 + Managed and configured internal services, including monitoring (Nagios, Zabbix, Observium), code repositories (SVN, Git, Gerrit), logging stack (ELK), and CI/CD pipelines (Jenkins).
-** 2012, January –  2014, December | Senior PHP Developer at Xstream A/S
+** 2012, January –  2014, December | Senior PHP Developer at Xstream A/S | Warsaw, Poland (Hybrid)
 + Developed and maintained video content management and processing systems using PHP 5 (Zend Framework, Symfony 2) and MySQL.
-** 2005 – 2011 | Earlier Roles: PHP Developer, System Administrator
+** 2005 – 2011 | Earlier Roles: PHP Developer, System Administrator | Lodz, Poland
 + Built multiple web applications and custom frameworks using PHP 5, MySQL, and various frameworks (Kohana, Yii, Zend).
 + Implemented data mining and search solutions using Lucene and Solr.
 + Provided IT support, including network management and Windows Server administration.

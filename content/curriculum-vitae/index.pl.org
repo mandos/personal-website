@@ -9,6 +9,8 @@
 
 * Profil
 Senior DevOps Engineer z ponad 10-letnim doświadczeniem w infrastrukturze chmurowej i zapleczem programistycznym. Doświadczony w kierowaniu małymi zespołami DevOps, migracji infrastruktury do IaC oraz optymalizacji kosztów AWS. Specjalizacja w Terraform, Kubernetes i automatyzacji CI/CD.
+
+Lokalizacja: Sapporo, Japonia
 * Języki
 + Polski - Ojczysty
 + Angielski - C1 (Biegłość zawodowa)
@@ -25,33 +27,33 @@ Wydział Fizyki Technicznej, Informatyki i Matematyki Stosowanej
 + Monitoring: Datadog, Prometheus, Grafana, ELK Stack
 + Skryptowanie: Python, Bash, TypeScript
 * Doświadczenie
-** 2025, Listopad  - Obecnie | Niezależny Developer / Open Source
+** 2025, Listopad  - Obecnie | Niezależny Developer / Open Source | Sapporo, Japonia
 + Zaprojektowanie i rozwój Open Transit Stack, open-source'owego monorepo do przetwarzania, walidacji i wizualizacji danych transportu publicznego (GTFS) z użyciem TypeScript, React i MapLibre GL.
 + Budowa infrastruktury AWS (S3, CloudFront, ACM, DNS) z wykorzystaniem Pulumi jako Infrastructure as Code.
 + Struktura projektu jako monorepo Nx ze ścisłym TypeScript, Vitest, testami E2E Playwright oraz ESLint/Prettier.
-** 2024, Kwiecień – 2024, Październik | Senior DevOps Engineer w Foundever
+** 2024, Kwiecień – 2024, Październik | Senior DevOps Engineer w Foundever | Łódź, Polska (Zdalnie)
 + Zaprojektowanie samoobsługowego procesu provisioningu baz danych dla mikroserwisów, umożliwiającego zespołom deweloperskim tworzenie infrastruktury PostgreSQL bez udziału zespołu DevOps.
 + Przeprowadzenie migracji projektów GitLab na nową instancję, umożliwiając wyłączenie starszego serwera GitLab i standaryzację pipeline'ów CI/CD między zespołami.
 + Zarządzanie infrastrukturą AWS przy użyciu Terraform oraz usprawnienie procesów dostarczania, w tym pipeline'ów GitLab i konfiguracji ArgoCD/Helm.
-** 2021, Czerwiec – 2024, Marzec | Senior DevOps Engineer w Cobiro
+** 2021, Czerwiec – 2024, Marzec | Senior DevOps Engineer w Cobiro | Warszawa, Polska (Hybrydowo)
 + Kierowanie małym zespołem DevOps, nadzór nad infrastrukturą chmurową i procesami wdrożeń.
 + Osiągnięcie 50% redukcji kosztów infrastruktury i operacyjnych poprzez optymalizację Kubernetes, dobór rozmiaru RDS oraz migrację z Datadog do Elastic Cloud.
 + Migracja infrastruktury AWS do modelu Infrastructure as Code (IaC) z wykorzystaniem Terraform, Terragrunt i Atlantis.
 + Administracja klastrami Kubernetes (EKS) z Helm, wdrożenie cluster autoscaler i KEDA do skalowania sterowanego zdarzeniami.
 + Budowa pipeline'ów CI/CD (CircleCI) i obrazów Docker dla zespołów frontend i backend.
-** 2019, Styczeń  – 2021, Czerwiec | Senior DevOps Engineer w SeaChange Polska
+** 2019, Styczeń  – 2021, Czerwiec | Senior DevOps Engineer w SeaChange Polska | Warszawa, Polska (Hybrydowo)
 + Koordynacja pracy małego zespołu DevOps oraz nadzór nad infrastrukturą i procesami automatyzacji.
 + Projektowanie i wdrożenie infrastruktury opartej na AWS z wykorzystaniem Terraform dla produktów firmy, obejmującej ECS, EKS, EC2, S3, CloudFront, KMS, IAM, ElastiCache (Redis) oraz Elasticsearch.
 + Tworzenie i konfiguracja systemów monitoringu (Prometheus, Grafana) oraz logowania (ELK, S3).
 + Opracowanie systemu dynamicznego tworzenia środowisk dla produktów firmy z wykorzystaniem Terraform i Jenkins.
 + Zarządzanie kontami AWS oraz konfiguracja infrastruktury sieciowej, w tym IAM i VPC, przy użyciu Terraform.
-** 2015, Styczeń – 2018, Grudzień | System Administrator w Xstream A/S
+** 2015, Styczeń – 2018, Grudzień | System Administrator w Xstream A/S | Warszawa, Polska (Hybrydowo)
 + Projektowanie i utrzymanie infrastruktury AWS z wykorzystaniem wewnętrznego systemu opartego na Python (Boto, Fabric), Puppet i Packer, a następnie migracja do CloudFormation.
 + Zarządzanie ponad 300 serwerami on-premise (zarówno fizycznymi, jak i wirtualnymi) przy użyciu Fabric i Puppet.
 + Zarządzanie i konfiguracja usług wewnętrznych, w tym: monitoringu (Nagios, Zabbix, Observium), repozytoriów kodu (SVN, Git, Gerrit), systemu logowania (ELK) oraz potoków CI/CD (Jenkins).
-** 2012, Styczeń  – 2014, Grudzień | Senior PHP Developer w Xstream A/S
+** 2012, Styczeń  – 2014, Grudzień | Senior PHP Developer w Xstream A/S | Warszawa, Polska (Hybrydowo)
 + Rozwój i utrzymanie systemów zarządzania treściami wideo oraz przetwarzania materiałów wideo z wykorzystaniem PHP 5 (Zend Framework, Symfony 2) i MySQL.
-** 2005 – 2011 | Wcześniejsze role: PHP Developer, System Administrator
+** 2005 – 2011 | Wcześniejsze role: PHP Developer, System Administrator | Łódź, Polska
 + Budowa wielu aplikacji webowych i autorskich frameworków z użyciem PHP 5, MySQL oraz różnych frameworków (Kohana, Yii, Zend).
 + Implementacja rozwiązań do przetwarzania i wyszukiwania danych z użyciem Lucene i Solr.
 + Wsparcie IT, w tym zarządzanie siecią i administracja serwerami Windows.
