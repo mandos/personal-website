@@ -1,0 +1,34 @@
+#+title: Week 10 in Wonderland 2026
+#+date: <2026-03-08 nie>
+#+tags[]: weekly latex emacs ai tmux testing
+#+description: Fighting org-mode to LaTeX CV export, settling for two-file approach with AltaCV, and discovering that Claude writes tests that pass but don't actually test anything.
+#+summary: Fighting org-mode to LaTeX CV export, settling for two-file approach with AltaCV, and discovering that Claude writes tests that pass but don't actually test anything.
+#+lastmod: [2026-03-18 14:46]
+
+/*Disclaimer:*/
+#+begin_quote
+"I would never die for my beliefs because I might be wrong"
+
+*Bertrand Russell (or not)*
+#+end_quote
+
+* Overengineering, older brother of micro-optimization
+I wanted to refresh my CV, it was a PDF to send via "traditional" channels and org documents to show on the page. I had in mind a workflow with one source of truth (org document) which would be used both to generate static Hugo pages and PDF. I tried it in the past, Emacs has a feature to export org files to different formats, also in this way ~org-mode -> latex -> pdf~, but PDF files looked shitty. Also, after a little digging on the internet I learned about LaTeX classes and found a nice class file for CV ([[https://github.com/liantze/AltaCV][GitHub - liantze/AltaCV]]). So I felt ready to... give this task to Claude. I asked about different approaches, and of course chose what I was planning before.
+
+Unfortunately, there were some issues, maybe the most important issue number 1 was I didn't understand what I was doing or I didn't care to learn deeply about the topic. Issue number 2 was that conversion between org-mode format and LaTeX/PDF is more complex, for example a two-column layout is not how markdown usually works. There is a way to add some LaTeX stuff to Org-Mode but /issue number 1/ stood in my way, and maybe also it was not so trivial. I tried to use [[https://titan-c.gitlab.io/org-cv/][Org CV]], but some of the data was kept as metadata, so it wouldn't show on the webpage.
+
+After a few hours of fighting I gave up and came back to stage 0, asked Claude for proposals and chose the simplest one — two files, one in Org-Mode format to generate the page, one in LaTeX format with a class file to generate PDF. Data is synchronized by LLM — when I need to update the CV, I just tell Claude what to change and it updates both files at once, keeping them consistent. Maybe I will change it to a single file in YAML or similar format as one source of truth and some simple templating system to generate tex and org files, but I don't change my CV so often, so that would also be a little overengineering and make the process more complex than it should be.
+#+begin_quote
+Why spend 5 minutes on a manual task when you can spend 5 hours automating it... and fail?
+
+*Anonymous DevOps*
+#+end_quote
+* Claude, con artist
+
+One of my favourite plugins for Tmux was [[https://github.com/27medkamal/tmux-session-wizard][GitHub - 27medkamal/tmux-session-wizard]] which allows me to easily manage sessions based on project folder. I participated in the project by adding some features, tests and packaging it as a Nix package. When I moved to Emacs, I stopped using it but recently I came back and decided to add some additional features, notably hooks to extend functionality outside the core code base. First hook I wanted to implement was ~pre-create-session-hook~, nothing fancy, just based on ~eval~ some code provided by the user in Tmux's option. I did some refactoring and allowed Claude to implement the functionality, then I asked it to extend the test suite and everything looked fine... until it wasn't. I read unit tests and saw that some tests didn't check what they promise, same was with integration tests.
+
+Claude could fix it when it was pointed out, but I'm curious how many passing, low quality tests are produced by LLM every second and how many of them are just ignored in review because of laziness/lack of time/size of changes. I'm curious if the size of a project or quality of existing code/tests has an impact on generating code, I haven't researched it yet, and maybe for an answer we need to wait a few years. Maybe it's true what I heard, that LLMs are multipliers of skill, if the base is good, the effect will be better, if the base is bad... we will go down to *maintenance hell*.
+
+* Comments
+
+{{< comments/email >}}

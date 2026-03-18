@@ -9,7 +9,7 @@
 #+begin_quote
 "I would never die for my beliefs because I might be wrong"
 
-Bertrand Russell (or not)
+*Bertrand Russell (or not)*
 #+end_quote
 
 * Pulumi: first look
