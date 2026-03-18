@@ -141,3 +141,7 @@ myKeys =
 Second week with Claude and I'm really surprised how some stuff I would spend many hours on because of lack of skills or knowledge (or both) can be done in a few minutes. I'm not using all available "credits" yet, so it means that maybe I can give it more tasks. Making small improvements to my setup, creating features for Ippo is quick and, I need to say it, a lot of fun.
 On the other hand, I'm still afraid that I'm not learning a lot during this process. Weekly blog posts are one way to check what I remember from stuff that was done, what I still understand, and right now I see that it's not enough. I need to check the code once again, how some features were done, and I'm pretty sure that implementing it by myself would take a lot of time and additional research. Looks like I need to change strategy using AI.
 I can see a case when Claude can be that slightly depressed coworker who pushes you to do more stuff, with better focus and dedication, but also I can see a world where Claude will be that junior who gets all the work to do because senior staff want to drink another coffee and have some chit-chat with coworkers.
+
+* Comments
+
+{{< comments/email >}}

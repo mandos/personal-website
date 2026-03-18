@@ -112,3 +112,7 @@ I mostly slept over AI hype, at least some of it, I was using Copilot at the beg
 Also there is a question of how productive people are using these tools, and as usually looking at the "product" itself is enough to judge it. First task I did with it, was to write Emacs Doom module to integrate Claude-Code package. My second task was to extend this module to integrate another "better" Claude-Code package. This wasn't productive at all, but fuck, it felt nice.
 
 For now I'm still exploring possibilities to use it, I already see some shortcomings and dangers but also quite a lot of possible improvements in workflow. Plan I have is enough to test some stuff but also not big enough to be a lazy dumpling and delegate every silly task to it. So maybe there's still hope for me... and my soul.
+
+* Comments
+
+{{< comments/email >}}
