@@ -5,7 +5,9 @@
 #+type: single
 #+lastmod: [2026-03-02 13:30]
 
-[[file:marek-maksimczyk-cv-pl.pdf][Pobierz PDF]]
+#+begin_export html
+<a href="marek-maksimczyk-cv-pl.pdf" class="button">Pobierz PDF</a>
+#+end_export
 
 * Profil
 Senior DevOps Engineer z ponad 10-letnim doświadczeniem w infrastrukturze chmurowej i zapleczem programistycznym. Doświadczony w kierowaniu małymi zespołami DevOps, migracji infrastruktury do IaC oraz optymalizacji kosztów AWS. Specjalizacja w Terraform, Kubernetes i automatyzacji CI/CD.

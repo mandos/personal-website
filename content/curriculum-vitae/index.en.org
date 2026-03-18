@@ -5,7 +5,9 @@
 #+export_file_name: marek-maksimczyk-cv-en
 #+lastmod: [2025-10-24 15:48]
 
-[[file:marek-maksimczyk-cv-en.pdf][Download PDF]]
+#+begin_export html
+<a href="marek-maksimczyk-cv-en.pdf" class="button">Download PDF</a>
+#+end_export
 
 * Profile
 Senior DevOps Engineer with 10+ years in cloud infrastructure and a software development background. Experienced in leading small DevOps teams, migrating infrastructure to IaC, and optimizing AWS costs. Strong focus on Terraform, Kubernetes, and CI/CD automation.

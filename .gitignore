@@ -1,7 +1,9 @@
 # misc
+CLAUDE.md
 .direnv
 .org-publish-cache
 result
+tmp
 
 # infra
 .terraform
