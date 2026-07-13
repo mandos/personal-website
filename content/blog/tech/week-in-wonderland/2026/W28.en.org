@@ -1,0 +1,39 @@
+#+title: Week 28 in Wonderland 2026
+#+date: <2026-07-12 nie>
+#+tags[]: weekly nixos nvidia hardware
+#+description: Cleaning up branches and setting up partial clone on the nixpkgs repo, and chasing a phantom Display Port failure through a NixOS flake update.
+#+summary: Cleaning up branches and setting up partial clone on the nixpkgs repo, and chasing a phantom Display Port failure through a NixOS flake update.
+#+lastmod: [2026-07-13 14:27]
+
+* Manage nixpkgs repository
+[[https://github.com/NixOS/nixpkgs][GitHub - NixOS/nixpkgs]] repository is quite big, changes a lot, and has a fuck load of branches. I don't use it a lot, but from time to time I want to check something or introduce some changes. Working with it is not easy, so recently I tried a little bit to smooth the experience. I have my fork (remote *origin*) and the original repo (*upstream*). First thing was removing all unnecessary branches — I wanted only *master* and my own.
+#+begin_src sh
+git branch --remotes | grep --ignore-case "upstream" | grep --invert-match --regexp "HEAD\|master" | xargs --no-run-if-empty git branch --delete --remotes
+#+end_src
+
+Next, I want to be sure that I don't download a lot of data from the repo by using git's [[https://git-scm.com/docs/partial-clone/2.25.0][partial-clone]] feature.
+#+begin_src sh
+git config remote.origin.promisor true
+git config remote.origin.partialCloneFilter blob:none
+git config remote.upstream.promisor true
+git config remote.upstream.partialCloneFilter blob:none
+#+end_src
+
+I'm not sure if it's works correctly, needs more testing.
+
+Last but not least, I care only about master in the upstream repo, and I also want to prevent fetching all remotes with `git fetch --all`, so:
+#+begin_src sh
+git config remote.upstream.fetch '+refs/heads/master:refs/remotes/upstream/master'
+git config remote.upstream.skipFetchAll true
+#+end_src
+
+* Nvidia Optimus Prime... more like Nvidia B.O.T.
+Recently I was working on my NixOS configuration. I needed the newest version of systemd, so I thought I'd just update the flake's input to the current unstable version — damn, this was painful. I have an older Dell laptop with an Nvidia Quadro K3100M, and as far as I remember I've always had problems with setting up the external monitors. HDMI, docking station, Display Port, all of these worked... or not, or sometimes. My (sometimes random) changes didn't help either — this time was no different. My external monitor, connected via Display Port, suddenly stopped working. Changing drivers didn't help, changing the Nvidia Nix configuration between sync, reverse sync, or offload mode didn't help either. Blacklisting the Intel modules only made the situation worse.
+
+Using `udevadm monitor` (FTW) I figured out that there were no events when I pulled the cable out of and back into the Display Port, so maybe there was some hardware problem? I'm still not sure, but I decided to try the HDMI port instead and had some success. Unfortunately I couldn't switch the resolution to 2560x1440 because I got a black screen. Help came from an unexpected direction: when I gave up and decided to relax a little by playing on my dual-booted Windows, I saw that the external monitor still wasn't recognized there either.
+
+The funny thing is, the unconscious assumption is that on Windows it should just work, and if it doesn't, it's more likely a hardware problem. I changed the HDMI cable to a different one and it looks like that solved the issue, both on Linux and Windows. Next time, before a NixOS update, I think I will kill the black rooster and draw some bloody Voodoo symbols on the Dell case. Maybe this helps.
+
+* Comments
+
+{{< comments/email >}}
