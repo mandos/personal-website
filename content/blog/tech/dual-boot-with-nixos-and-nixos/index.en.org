@@ -1,0 +1,120 @@
+#+title: Dual Boot with NixOS and NixOS
+#+date: [2026-07-24 18:39]
+#+lastmod: [2026-07-24 18:42]
+#+showLastmod: true
+#+filetags: :nixos:
+#+tags[]: nixos
+#+toc: true
+#+description: How to run two independent NixOS installations on separate root partitions with a shared /boot, by patching the systemd-boot module so each instance manages its own EFI directory and loader entries.
+#+summary: This article describes how to run two independent NixOS installations on a single machine, each with its own root partition but sharing a single /boot. It walks through why NixOS Containers and System Specialisation weren't a good fit, and how patching the systemd-boot NixOS module — adding a configurable boot-entry prefix and an option to skip managing loader.conf — lets each instance keep its own EFI folder and loader entries without stepping on the other. It closes with practical safety tips and a known limitation around duplicate NVRAM boot entries.
+
+#+begin_comment
+/*Disclaimer:*/
+Be responsible with anything you do on your machine... and with other things too.
+#+end_comment
+
+* Introduction
+
+Recently, one of my customers had a requirement to install a specific application on my system. I wasn't happy about polluting my main NixOS, so I thought it would be a nice idea to have a separate /customer's/ NixOS instance alongside my /private/ one. This article shows one possible solution.
+
+My setup is a laptop with two SSDs: NixOS and Windows are installed on separate drives, the boot process is managed through the [[https://en.wikipedia.org/wiki/EFI_system_partition][EFI system partition]], and NixOS is configured with [[https://systemd.io/BOOT/][systemd-boot]]. I already have a messy but modular NixOS configuration which I want to reuse for the second OS instance.
+
+* Tries and errors
+
+First of all, I ditched the idea of using [[https://nixos.org/manual/nixos/stable/#ch-containers][NixOS Containers]], a solution built on systemd-nspawn. The big red warning about it /not being perfectly isolated from the host system/ was enough to make me look for a different solution. Same with [[https://wiki.nixos.org/wiki/Specialisation][System Specialisation]], which solves a different problem — it's more about making different permutations of your main system, with the ability to choose one from the boot loader. So I decided to try two installations with */root* on two different partitions with a shared */boot*.
+
+The main problem with this is managing the boot loader with the systemd-boot module: if I used it for both NixOS instances, applying either configuration would wipe out the other one. I thought about managing the boot loader from one system with some custom entries for the second one, but then I would lose some features for the second system, like multiple boot loader entries for different generations, specializations, etc.
+
+I couldn't find any relevant options in boot.loader.systemd-boot (repo: [[https://github.com/NixOS/nixpkgs][GitHub - NixOS/nixpkgs]], path: [[https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/system/boot/loader/systemd-boot][nixos/modules/system/boot/loader/systemd-boot]]) to do it out of the box, but after checking the code of the module I found out that the heavy lifting is done in a Python script, =systemd-boot-builder.py=. So modifying this module and/or script should give me what I want, and then I just replace the original with the modified one.
+
+* The Solution
+
+So the end goal is to have different folders in =/boot/EFI= for the Unified Kernel Images of both my NixOS instances, and to make sure that each NixOS configuration manages loader entries (=/boot/loader=) only for its own instance and leaves the other one alone.
+
+In the end it wasn't so hard. So how did I do it? As a base I used the original module and copied it to my config; there were two files, =systemd-boot.nix= with the module code, and =systemd-boot-builder.py= with the Python script that does most of the work regarding systemd-boot.
+
+As for the module, I added two options:
+ 1. bootPrefix, to manage the folder where UKIs are created.
+ 2. manageLoaderConf, to make sure only one configuration is the default; otherwise every configuration apply would make the current system the default.
+#+begin_src nix
+bootPrefix = mkOption {
+  default = "nixos";
+  type = types.str;
+  description = ''
+    Prefix used for the boot entry directory (`/EFI/''${bootPrefix}`) and for the
+    generated `loader/entries/''${bootPrefix}-*.conf` files. It is also used to match
+    and clean up old entries on activation.
+
+    Don't use a dash (`-`) in this value, since entries are matched against
+    `''${bootPrefix}-.+\.conf`; a dash here would corrupt that matching and could cause
+    entries to be incorrectly removed during cleanup.
+  '';
+  example = "work_nixos";
+};
+
+manageLoaderConf = mkOption {
+  default = true;
+  type = types.bool;
+  description = ''
+    Whether to generate and manage {file}`loader/loader.conf`, controlling the boot
+    timeout, default entry, and editor settings. Disable this if you want to manage
+    {file}`loader/loader.conf` yourself.
+  '';
+  example = false;
+};
+#+end_src
+
+After this, I modified the =systemdBootBuilder= derivation by changing the replacement for ~nixosDir~.
+#+begin_src nix
+nixosDir = "/EFI/${cfg.bootPrefix}";
+#+end_src
+And added two additional replacements for my options:
+#+begin_src nix
+bootPrefix = cfg.bootPrefix;
+manageLoaderConf = if cfg.manageLoaderConf then "True" else "False";
+#+end_src
+
+In the script, I added two global variables which will be replaced during the build:
+#+begin_src python
+BOOT_PREFIX = "@bootPrefix@"
+MANAGE_LOADER_CONF = "@manageLoaderConf@" == "True"
+#+end_src
+
+Then I searched for the =nixos-= string used as a prefix in the original module and replaced it with =BOOT_PREFIX=. In the version of the module which I modified, I had to do this in:
+ - method =from_entry= of class =BootFile=
+ - =write_loader_conf= function
+ - =garbage_collect= function
+
+Additionally, I used =MANAGE_LOADER_CONF= to block changes to the loader.conf file, by adding an early return at the top of the =write_loader_conf= function:
+#+begin_src python
+if not MANAGE_LOADER_CONF: return
+#+end_src
+
+After this, the only thing left was to disable the original module in the configuration and use the modified one:
+#+begin_src nix
+disabledModules = [ "system/boot/loader/systemd-boot/systemd-boot.nix" ];
+imports = [
+  ./../../overrides/nixos/system/boot/loader/systemd-boot/systemd-boot.nix
+];
+#+end_src
+
+And use a tag to recognize the system in the boot loader:
+#+begin_src nix
+system.nixos.tags = [ "work" ];
+#+end_src
+
+The full modified module and script are available in [[https://github.com/mandos/webpage/tree/master/content/blog/tech/dual-boot-with-nixos-and-nixos/code][this repository]].
+
+* How to not completely fuck yourself up
+
+1. It's always good to have a rescue system on a USB drive — you never know when you'll need it, especially when you're playing with the boot loader.
+2. After every configuration apply, it's worth checking =/boot/EFI= and =/boot/loader= to make sure everything looks okay.
+3. Using =nixos-enter= is an easy way to apply a configuration on the second system without rebooting. Before doing this, you need to mount at least the root and boot partitions under =/mnt= (the default, though it can be changed).
+
+* Summary
+
+This is not the easiest solution, and maintaining your own version of a NixOS module will always be a pain in the ass. Unfortunately, I don't currently have a requirement to run two NixOS systems on one machine, so I couldn't test some edge cases. One minor bug I did find was duplicate NVRAM boot entries: each instance's =bootctl install= registers its own "Linux Boot Manager" entry pointing at the same =\EFI\systemd\systemd-bootx64.efi=, so running it from both systems leaves you with duplicate entries in the firmware's boot menu (check with =efibootmgr -v=); harmless, but worth cleaning up manually if it bothers you.
+
+* Comments
+
+{{< comments/email >}}
